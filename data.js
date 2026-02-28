@@ -2,7 +2,8 @@ const ARCHIVE_DATA = [
     {
         id: "SP_001",
         name: "SOIL_WASHED_OVERCOAT",
-        status: "AVAILABLE / 04",
+        status: "// [ AVAILABLE / 04 ]",
+        category: "ORGANIC", // 核心新增：定义分类
         preview_img: "path/to/img1.jpg",
         report: {
             material: "TUSSAH SILK (柞蚕丝) / WILD HARVESTED",
@@ -14,7 +15,8 @@ const ARCHIVE_DATA = [
     {
         id: "SP_002",
         name: "FIRE_GRASS_WEAVE",
-        status: "ARCHIVED",
+        status: "// [ ARCHIVED ]",
+        category: "MINERAL", // 核心新增：定义分类
         preview_img: "path/to/img2.jpg",
         report: {
             material: "WILD FIRE GRASS (火草) / HAND-TWISTED FIBER",

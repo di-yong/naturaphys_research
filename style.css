@@ -1,42 +1,128 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+html {
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    background: #121210; /* 这里的颜色必须和背景一致，即使漏了也看不出来 */
+}
 /* 基础重置与光标 */
-body, html {
-    margin: 0; padding: 0; width: 100%; height: 100%;
-        /* 核心基调：深炭褐 */
+body {
+    margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        position: fixed; /* 核心：用 fixed 替代 block，彻底剥夺滚动权限 */
+        top: 0;
+        left: 0;
+        overflow: hidden !important;
+
+        /* 之前的背景与动画逻辑 ... */
         background-color: #121210;
+        background-image:
+            radial-gradient(circle at center, rgba(45, 42, 35, 0.45) 0%, transparent 80%),
+            url('assets/asfalt-dark.png');
         background-size: 130% 130%;
-
-        /* 1. 纤维纹理的噪点背景 (原有) */
-        background-image:
-            url('https://www.transparenttextures.com/patterns/asfalt-dark.png');
-
-        /* 2. 在噪点之上，加入有机的呼吸光晕 */
-        background-image:
-            radial-gradient(circle at center, rgba(45, 42, 35, 0.45) 0%, transparent 80%), /* 暖金色微光 */
-            url('https://www.transparenttextures.com/patterns/asfalt-dark.png');
-
-        /* 核心精调：启动呼吸动画 */
+        animation: breathingGlow 60s ease-in-out infinite;
         animation: breathingGlow 60s ease-in-out infinite;
 
         color: #a09d94;
         font-family: 'Courier New', monospace;
-        overflow: hidden; display: flex; justify-content: center; align-items: center;
         cursor: none;
+
 }
 
-#custom-cursor { width: 15px; height: 15px; border: 1px solid rgba(255,255,255,0.2); position: fixed; border-radius: 50%; pointer-events: none; z-index: 99999; transform: translate(-50%, -50%); transition: transform 0.08s ease-out; mix-blend-mode: difference; }
+#custom-cursor {
+    width: 15px; height: 15px;
+    border: 1px solid rgba(212, 203, 179, 0.4); /* 改用暖色系，与整体统一 */
+    position: fixed; border-radius: 50%;
+    pointer-events: none; z-index: 99999;
+    transform: translate(-50%, -50%) scale(1); /* 增加初始缩放 */
+    transition:
+        transform 0.1s ease-out,
+        width 0.3s ease,
+        height 0.3s ease,
+        background 0.3s ease,
+        opacity 0.3s ease; /* 增加多种属性的过渡 */
+    mix-blend-mode: difference;
+    will-change: left, top;
+}
+
+/* --- 核心：当光标移入可点击元素时的“谦让”状态 --- */
+.cursor-hover {
+    transform: translate(-50%, -50%) scale(0.5) !important; /* 缩小一倍 */
+    background: rgba(212, 203, 179, 0.2); /* 淡淡地填充，像个实心的小点 */
+    opacity: 0.6; /* 变淡，不干扰文字阅读 */
+    border-color: transparent !important;
+}
 
 /* 首页 Manifesto 样式 */
-#void-container { text-align: center; width: 85%; max-width: 950px; z-index: 5; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);  }
-h1 { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 400; font-size: 11px; letter-spacing: 1.2em; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -120px); width: 100%; margin: 0; color: #dcdcdc; text-transform: uppercase; opacity: 0; transition: all 3s ease; }
-.manifesto { font-size: 9px; line-height: 3.2; letter-spacing: 0.4em; height: 120px; margin-top: 60px; display: block; text-align: center;}
+#void-container {
+		width: 90%;
+    max-width: 1000px;
+    z-index: 5;
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    display: block !important; /* 强制声明 block，防止被其他样式污染 */
+}
+
+h1 {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 400;
+    font-size: 11px;
+    letter-spacing: 1.2em;
+    color: #dcdcdc;
+    text-transform: uppercase;
+    opacity: 0;
+    transition: opacity 3s ease;
+    display: block;
+    width: 100%;
+    margin-right: -1.2em;
+
+    /* 核心锁定：上下为0，左右自动，底部强制留出 100px 呼吸感 */
+    margin: 0 auto 100px auto !important;
+}
+
+.manifesto {
+		font-size: 9px;
+    line-height: 3.2;
+    letter-spacing: 0.4em;
+    min-height: 120px;
+    display: block;
+    text-align: center;
+    margin: 0 auto;
+    color: #88857e;
+}
+
 .manifesto span { opacity: 0; display: inline; will-change: opacity, color; transition: opacity 1.5s ease-out, color 3.5s ease; color: #88857e; }
 .manifesto span.faded { color: #2a2825; }
 
 /* 授权验证样式 */
-#access-trigger { position: absolute; bottom: 120px; font-size: 9px; letter-spacing: 0.6em; color: #4a453a; cursor: pointer; opacity: 0; transition: 2s; z-index: 100; }
+#access-trigger {
+		position: absolute;
+    bottom: 120px;
+
+    /* 核心修改：精准水平居中 */
+    left: 50%;
+    transform: translateX(-50%);
+
+    font-size: 9px;
+    letter-spacing: 0.6em;
+    color: #4a453a;
+    cursor: pointer;
+    opacity: 0;
+    transition: 2s, color 0.4s ease, transform 0.4s ease; /* 增加对 transform 的过渡支持 */
+    z-index: 100;
+    white-space: nowrap; /* 防止字母间距太大导致换行 */
+}
 #access-trigger:hover {
     /* 悬停时让它像火草一样发光 */
     color: #d4cbb3;
+    transform: translateX(-50%) translateY(-5px);
 }
 #auth-overlay {
     position: fixed;
@@ -54,6 +140,7 @@ h1 { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 4
     transition: opacity 0.6s ease;
 }
 .auth-box {
+		position: relative;
     text-align: center;
     width: 320px; /* 稍微加宽一点，更有张力 */
     padding: 60px 40px;
@@ -105,53 +192,289 @@ h1 { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 4
 }
 /* 档案层样式 */
 #archive-layer {
-    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    position: fixed; top: 0; left: 0; width: 100%; max-width: 100vw; height: 100vh;
     background-color: #121210;
-    display: none; flex-direction: column; align-items: center;
-    z-index: 3000; padding-top: 80px; opacity: 0; transition: opacity 1.5s ease;
+    display: none;
+    flex-direction: column;
+    align-items: stretch; /* 核心修改：不再强制居中，允许子元素撑满宽度 */
+    z-index: 3000;
+    padding: 80px 40px 40px 40px;
+    overflow: hidden;
+    opacity: 0; transition: opacity 1.5s ease;
     background-image:
             radial-gradient(circle at center, rgba(45, 42, 35, 0.25) 0%, transparent 85%),
-            url('https://www.transparenttextures.com/patterns/asfalt-dark.png');
+            url('assets/asfalt-dark.png');
     background-size: cover; box-sizing: border-box;
 }
-.archive-header { width: 85%; display: flex; justify-content: space-between; font-size: 9px; color: #4a453a; letter-spacing: 0.5em; border-bottom: 1px solid #1d1d1a; padding-bottom: 15px; margin-bottom: 50px; }
-.specimen-list { width: 85%; text-align: left; }
-.specimen-item {
+
+.split-container {
     display: flex;
-    align-items: center; /* 垂直居中 */
-    padding: 30px 0;
-    border-bottom: 1px solid rgba(45, 42, 35, 0.15);
-    font-size: 11px;
-    letter-spacing: 0.25em;
-    color: #5a564d;
-    cursor: pointer;
-    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-    width: 100%; /* 确保撑满容器 */
-}
-.specimen-item:hover {
-    color: #d4cbb3; /* 悬停时显示出干枯火草的颜色 */
-    background: rgba(212, 203, 179, 0.02); /* 极弱的暖光 */
-    padding-left: 5px;
-}
-.specimen-item:hover .name {
-    color: #fff;
-}
-.specimen-item .id {
-    width: 20%; /* 增加一点宽度 */
-    color: #3d3a33;
-    flex-shrink: 0; /* 禁止缩放 */
-}
-.specimen-item .name {
-    width: 50%; /* 占据中间所有剩余空间 */
-    text-align: left; /* 强制靠左对齐 */
-    transition: color 0.4s;
+    flex-direction: row; /* 横向排列 */
+    width: 100%;
+    overflow: hidden;
+    height: calc(100vh - 160px);
+    gap: 0;
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.specimen-item .status {
-    width: 30%; /* 固定右侧状态栏宽度 */
-    text-align: right; /* 状态靠右 */
+.specimen-list-wrapper {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 20px;
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    /* 确保它是一个可以接收点击的容器 */
+    pointer-events: all;
+    z-index: 5;
+}
+
+/* --- 3. 右侧详情面板 (取代 Overlay) --- */
+#inspection-panel {
+    flex: 0;
+    width: 0;
+    min-width: 0;
+    opacity: 0;
+    visibility: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background: rgba(18, 18, 16, 0.4);
+    border-left: 0px solid rgba(140, 126, 101, 0.2);
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    /* 关键：未开启时禁止一切鼠标交互，防止挡住列表 */
+    position: relative;
+    z-index: 100;
+    pointer-events: auto !important; /* 允许交互 */
+}
+
+/* --- 4. 激活分屏状态 --- */
+.split-container.active .specimen-list-wrapper {
+    flex: 0 0 380px; /* 列表收缩到左侧固定宽度 */
+    position: relative;
+    z-index: 101; /* 必须比面板层级略高，才能点击空白处回弹 */
+    pointer-events: auto !important;
+}
+.split-container.active #inspection-panel {
+    flex: 1; /* 详情区展开 */
+    opacity: 1;
+    visibility: visible;
+    border-left: 1px solid rgba(140, 126, 101, 0.2);
+    padding: 0 40px;
+    pointer-events: auto;
+}
+
+/* --- 5. 详情页内部精密排版 --- */
+.inspection-content {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.inspection-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(140, 126, 101, 0.1);
+    position: relative;
+    z-index: 1000;
+}
+
+.inspection-header h2 {
+    font-size: 28px;
+    font-weight: 400;
+    color: #fff;
+    margin: 0;
+    letter-spacing: 0.2em;
+}
+
+.inspection-close {
     font-size: 9px;
+    color: #4a453a;
+    cursor: pointer !important;
+    letter-spacing: 0.4em;
+    padding: 20px; /* 增加点击热区 */
+    margin: -20px;
+    transition: color 0.3s ease;
+    z-index: 9999 !important; /* 确保不被图片遮挡 */
+    position: relative;
+    pointer-events: auto !important;
+    user-select: none;
+}
+
+.inspection-close:hover { color: #d4cbb3; }
+
+.inspection-body {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr; /* 图片与文字并列 */
+    gap: 50px;
+    align-items: start;
+}
+
+/* 图片适配分屏高度 */
+.inspection-body .report-main-img {
+    width: 100%;
+    height: 60vh;
+    border: 1px solid rgba(45, 42, 35, 0.3);
+    background-size: cover;
+    filter: sepia(0.1) contrast(1.1);
+    transition: filter 1s ease;
+}
+
+.report-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.report-notes-box {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px dashed rgba(140, 126, 101, 0.2);
+    color: #888;
+    font-size: 11px;
+    line-height: 2;
+}
+
+/* --- 6. 列表项在压缩后的适配 --- */
+.split-container.active .specimen-item {
+    padding: 25px 20px 25px 120px; /* 减小间距防止溢出 */
+}
+
+.split-container.active .specimen-item .status {
+    opacity: 0; /* 压缩时隐藏状态，保住核心名字 */
+    pointer-events: none;
+}
+
+.split-container.active .specimen-item .id {
+    left: 70px; /* 调整编号位置 */
+}
+.archive-header { width: 85%; display: flex; justify-content: space-between; font-size: 9px; color: #4a453a; letter-spacing: 0.5em; border-bottom: 1px solid #1d1d1a; padding-bottom: 15px; margin-bottom: 50px; }
+.specimen-list {
+    min-height: 100%;
+    width: 100%;
+}
+
+.specimen-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* 基础还是左对齐 */
+    width: 100%; /* 锁定宽度 */
+    padding: 35px 40px 35px 160px; /* 重点：右侧也加上 60px 的 padding，防止文字撞墙 */
+    border-bottom: 1px solid rgba(45, 42, 35, 0.15);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    box-sizing: border-box;
+    overflow: hidden;
+}
+/* 垂直索引标签核心样式 */
+.specimen-tag {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    width: 60px;
+    text-align: center;
+    white-space: nowrap;
+    /* 保持中心旋转 */
+    transform: translateY(-50%) rotate(-90deg);
+    transform-origin: center center;
+
+    font-size: 7px;
+    font-weight: 800;
+    color: #2a2825;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    pointer-events: none;
+
+    border-left: 1px solid rgba(140, 126, 101, 0.1);
+    padding-left: 8px;
+    transition: all 0.4s ease;
+}
+.specimen-item:hover {
+    background: rgba(212, 203, 179, 0.03); /* 极弱的暖光，像手电筒照过去 */
+
+    /* 核心修正：从 10px 降到 4px，甚至可以设为 0 */
+    /* 我们追求的是“若有若无”的动感 */
+    transform: translateX(4px);
+
+    /* 增加一个极其微弱的左侧发光边框，模拟档案袋边缘被照亮 */
+    box-shadow: inset 2px 0 0 0 rgba(140, 126, 101, 0.4);
+}
+.specimen-item:hover .name {
+    color: #dcdcdc;
+    /* 关键 3: 间距变化幅度不要太大，0.28em 是极限 */
+    letter-spacing: 0.04em;
+
+    /* 关键 4: 物理缩放回归 1，利用 transform 的平滑性掩盖字间距的跳动 */
+    transform: scale(1);
+    filter: brightness(1.1);
+
+    /* 关键 5: 视觉欺骗——在动画过程中加入极微量的模糊 */
+    /* 这会让跳动的边缘变柔和，看起来像是在“对焦” */
+    filter: blur(0.2px);
+    transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+/* 悬停时的视觉唤醒 */
+/* 5. 悬停反馈 */
+.specimen-item:hover .specimen-tag {
+    color: #8c7e65;
+    border-left: 1px solid rgba(140, 126, 101, 0.8);
+    /* 字间距不要加太多，防止上下顶到别的行 */
+    letter-spacing: 0.5em;
+}
+.specimen-item .id {
+    position: absolute;
+    left: 100px; /* 这个位置是安全的 */
+    width: 60px;
+    color: #3d3a33;
+    font-size: 10px;
+    margin: 0;
+    transition: color 0.4s;
+    /* 强制它不随父级的 flex 挤压 */
     flex-shrink: 0;
+}
+/* 2. 名称：给它一个弹性的、但有上限的宽度 */
+.specimen-item .name {
+		display: inline-block;
+    flex-grow: 1;
+    text-align: left;
+    color: #a09d94;
+
+    /* 关键 1: 增加过渡时间，并确保包含 filter */
+    transition:
+        color 0.6s ease,
+        letter-spacing 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+        filter 0.6s ease,
+        transform 0.8s ease;
+
+    /* 关键 2: 告诉浏览器我们要动这些属性，提前优化 */
+    will-change: letter-spacing, filter, transform;
+
+    /* 初始状态稍微收缩一点点 */
+    transform-origin: left center;
+    transform: scale(0.995);
+}
+
+/* 3. 状态栏：彻底推向最右侧 */
+.specimen-item .status {
+    width: auto; /* 放弃之前的 30% 固定宽度 */
+    text-align: right;
+    font-size: 8px; /* 稍微缩小一号，制造层级感 */
+    color: #4a453a; /* 默认设为深色，像一种次要的元数据 */
+    letter-spacing: 0.3em;
+    flex-shrink: 0;
+    margin-left: 40px; /* 确保即使名字很长，也会留出至少 40px 间距 */
+    transition: all 0.4s ease;
+    white-space: nowrap;
+}
+
+.specimen-item:hover .id {
+    color: #666; /* 编号稍微提亮一点点 */
+}
+
+.specimen-item:hover .status {
+    color: #8c7e65; /* 变成黄铜色 */
+    letter-spacing: 0.1em; /* 状态栏字母多，可以稍微比名字多一点点，但也要收敛 */
+    transition: all 0.4s ease
+}
 }
 /* 预览图随鼠标移动 */
 #image-preview {
@@ -223,16 +546,25 @@ h1 { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 4
 
 .report-main-img {
     width: 100%;
-    height: 75vh;
+    height: 75vh; /* 确保 PC 和手机都有基础高度 */
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    border: 1px solid #2d2a23;
-    box-shadow: none; /* 增加深邃的阴影 */
-        /* 核心精调：让图片带一点植物染色的陈旧感 */
-    filter: sepia(0.15) contrast(1.1) brightness(0.9);
-    transition: filter 1.5s ease, transform 1s ease;
+    border: 1px solid rgba(45, 42, 35, 0.3);
     outline: 10px solid rgba(0, 0, 0, 0.3);
+
+    /* 关键属性：必须为 relative，否则扫描线会飞到页面顶部 */
+    position: relative;
+    overflow: hidden;
+
+    background-color: rgba(0, 0, 0, 0.2);
+    filter: sepia(0.15) contrast(1.1) brightness(0.8) blur(5px);
+    transition: filter 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* 当 Overlay 开启时，触发对焦动画 */
+#report-overlay[style*="opacity: 1"] .report-main-img {
+    filter: sepia(0.1) contrast(1.1) brightness(1) blur(0);
 }
 
 .report-close {
@@ -261,7 +593,7 @@ h2#rpt-id {
     top: 0; left: 0; width: 100%; height: 100%;
     pointer-events: none;
     z-index: 2; /* 放在内容后面 */
-    background: url('https://www.transparenttextures.com/patterns/stardust.png');
+    background: url('assets/stardust.png');
     opacity: 0.08;
     animation: dustMove 150s linear infinite;
 }
@@ -271,32 +603,7 @@ h2#rpt-id {
     to { background-position: 500px 500px; }
 }
 /* 报告右下角的复制询价按钮 */
-.copy-trigger {
-    font-size: 9px;
-    color: #4a453a;
-    cursor: pointer;
-    border: 1px dashed #2d2a23; /* 虚线更有手工票据、档案袋的感觉 */
-    padding: 15px;
-    text-align: center;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    margin-top: 30px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    background: transparent;
-}
 
-.copy-trigger:hover {
-    background: #8c7e65;
-
-        /* 文字颜色改为深炭褐色，确保对比度 */
-        color: #3d3a33;
-
-        /* 增加一个非常弱的发光效果，模拟萤石或矿物的质感 */
-        box-shadow: 0 0 15px rgba(140, 126, 101, 0.3);
-
-        border-style: solid;
-        border-color: #8c7e65;
-}
 
 /* 移动端简单适配：如果屏幕太小，调整间距 */
 @media (max-width: 768px) {
@@ -319,4 +626,71 @@ h2#rpt-id {
         background-size: 130% 130%;
         background-position: 45% 55%;
     }
+}
+
+/* --- MOBILE REFINEMENT (针对手机端的微调) --- */
+@media (max-width: 768px) {
+    /* 1. 隐藏手机端的自定义光标：它在触摸屏上只会挡路和造成延迟 */
+    #custom-cursor {
+        display: none !important;
+    }
+
+    /* 2. 强制恢复系统光标，方便手指点击 */
+    body, html {
+        cursor: auto !important;
+        overflow-x: hidden; /* 彻底封死横向滚动的可能 */
+        width: 100%;
+        position: relative;
+    }
+
+    /* 3. 提升 Manifesto 亮度：手机在室外反光严重，#88857e 在屏幕上几乎看不见 */
+    .manifesto span {
+        color: #b5b2aa; /* 提亮到暖砂色 */
+        font-size: 11px; /* 稍微大一点，确保可读 */
+    }
+
+    /* 4. 授权按钮：在手机上需要更大的点击感应区 */
+    #access-trigger {
+        font-size: 10px;
+        bottom: 100px;
+        padding: 15px 30px; /* 增加感应面积 */
+        border: 1px solid rgba(140, 126, 101, 0.2); /* 给手机端加个微弱边框，防止用户不知道点哪 */
+    }
+
+    /* 5. 详情页图片：确保在手机屏上是撑满的 */
+
+
+@keyframes scanLineAnim {
+    0% { top: 0%; opacity: 0; }
+    15% { opacity: 0.7; }
+    85% { opacity: 0.7; }
+    100% { top: 100%; opacity: 0; }
+}
+
+
+/* --- [ 手机端微调 ] --- */
+@media (max-width: 768px) {
+    .report-main-img {
+        height: 45vh; /* 手机端短一点，给文字留空间 */
+    }
+}
+
+::-webkit-scrollbar {
+    width: 4px;  /* 纵向滚动条弄细一点，更有实验室精密感 */
+    height: 0px; /* 横向滚动条直接归零 */
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(140, 126, 101, 0.2); /* 淡淡的金属色 */
+    border-radius: 2px;
+}
+
+/* 针对 Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(140, 126, 101, 0.2) transparent;
 }
