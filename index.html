@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>NATURAPHYS RESEARCH</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="report-overlay">
+    <div class="report-close" onclick="closeReport()">[ TERMINATE_SESSION_X ]</div>
+    <div class="report-content">
+        <div class="report-left">
+            <div class="report-field">
+                <label>MATERIAL_COMPOSITION</label>
+                <span id="rpt-material">--</span>
+            </div>
+            <div class="report-field">
+                <label>PROCESSING_METHOD</label>
+                <span id="rpt-process">--</span>
+            </div>
+            <div class="report-field">
+                <label>GEOGRAPHIC_COORDS</label>
+                <span id="rpt-coords">--</span>
+            </div>
+        </div>
+
+        <div class="report-main-img" id="rpt-img"></div>
+
+        <div class="report-right">
+            <h2 id="rpt-id">SP_XXX</h2>
+            <p id="rpt-notes">--</p>
+
+            <div class="copy-trigger" onclick="copyInquiry()">[ COPY_SPECIMEN_DATA ]</div>
+        </div>
+    </div>
+</div>
+<div id="protocol-status">ALTITUDE_2468M // NATURAPHYS</div>
+<div id="geo-coords">LOG_2026 // SPECIMEN_ARCHIVE</div>
+<div id="custom-cursor"></div>
+
+<div id="void-container">
+    <h1 id="brand-name">NATURAPHYS RESEARCH</h1>
+    <div id="manifesto-text" class="manifesto"></div>
+</div>
+
+<div id="access-trigger">[ REQUEST ACCESS_KEY ]</div>
+
+<div id="auth-overlay">
+    <div class="auth-box">
+        <div style="font-size: 8px; color: #333; margin-bottom: 30px; letter-spacing: 0.3em;">NODE_AUTHORIZATION</div>
+        <input type="password" id="key-input" autocomplete="new-password" spellcheck="false">
+        <div class="auth-contact">ENCRYPTED_INQUIRY: INFO@NATURAPHYS.COM</div>
+    </div>
+</div>
+
+<div id="archive-layer">
+    <div class="archive-header">
+        <span>ARCHIVE_INDEX_V2.0</span>
+        <span id="live-clock">00:00:00</span>
+    </div>
+    <div class="specimen-list">
+    </div>
+    <div id="image-preview"></div>
+</div>
+<div id="dust-layer"></div>
+<script src="data.js"></script>
+<script src="app.js"></script>
+
+</body>
+</html>

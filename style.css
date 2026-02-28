@@ -1,0 +1,322 @@
+/* 基础重置与光标 */
+body, html {
+    margin: 0; padding: 0; width: 100%; height: 100%;
+        /* 核心基调：深炭褐 */
+        background-color: #121210;
+        background-size: 130% 130%;
+
+        /* 1. 纤维纹理的噪点背景 (原有) */
+        background-image:
+            url('https://www.transparenttextures.com/patterns/asfalt-dark.png');
+
+        /* 2. 在噪点之上，加入有机的呼吸光晕 */
+        background-image:
+            radial-gradient(circle at center, rgba(45, 42, 35, 0.45) 0%, transparent 80%), /* 暖金色微光 */
+            url('https://www.transparenttextures.com/patterns/asfalt-dark.png');
+
+        /* 核心精调：启动呼吸动画 */
+        animation: breathingGlow 60s ease-in-out infinite;
+
+        color: #a09d94;
+        font-family: 'Courier New', monospace;
+        overflow: hidden; display: flex; justify-content: center; align-items: center;
+        cursor: none;
+}
+
+#custom-cursor { width: 15px; height: 15px; border: 1px solid rgba(255,255,255,0.2); position: fixed; border-radius: 50%; pointer-events: none; z-index: 99999; transform: translate(-50%, -50%); transition: transform 0.08s ease-out; mix-blend-mode: difference; }
+
+/* 首页 Manifesto 样式 */
+#void-container { text-align: center; width: 85%; max-width: 950px; z-index: 5; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);  }
+h1 { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 400; font-size: 11px; letter-spacing: 1.2em; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -120px); width: 100%; margin: 0; color: #dcdcdc; text-transform: uppercase; opacity: 0; transition: all 3s ease; }
+.manifesto { font-size: 9px; line-height: 3.2; letter-spacing: 0.4em; height: 120px; margin-top: 60px; display: block; text-align: center;}
+.manifesto span { opacity: 0; display: inline; will-change: opacity, color; transition: opacity 1.5s ease-out, color 3.5s ease; color: #88857e; }
+.manifesto span.faded { color: #2a2825; }
+
+/* 授权验证样式 */
+#access-trigger { position: absolute; bottom: 120px; font-size: 9px; letter-spacing: 0.6em; color: #4a453a; cursor: pointer; opacity: 0; transition: 2s; z-index: 100; }
+#access-trigger:hover {
+    /* 悬停时让它像火草一样发光 */
+    color: #d4cbb3;
+}
+#auth-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    /* 核心修改：使用和背景光晕统一的色调，并增加磨砂感 */
+    background: rgba(18, 18, 16, 0.2);
+    backdrop-filter: blur(20px) brightness(0.6);;
+    -webkit-backdrop-filter: blur(20px) brightness(0.6);;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+}
+.auth-box {
+    text-align: center;
+    width: 320px; /* 稍微加宽一点，更有张力 */
+    padding: 60px 40px;
+    /* 核心修改：不再用纯黑 #080808，改用半透明深色 */
+    background: rgba(20, 20, 18, 0.4);
+    border: 1px solid rgba(140, 126, 101, 0.15); /* 使用暗金色边框，且带透明度 */
+    box-shadow: 0 450px 100px rgba(0, 0, 0, 0.8);
+    position: relative;
+}
+/* 装饰：给盒子加一个极其微弱的顶部光边 */
+.auth-box::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(212, 203, 179, 0.2), transparent);
+}
+.auth-box div:first-child {
+    color: #4a453a !important; /* 强制设为深焦木色 */
+    letter-spacing: 0.5em;
+    font-size: 8px;
+}
+#key-input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #3d3a33;
+    /* 文字颜色提亮，给用户一种正在输入密码的即时反馈 */
+    color: #d4cbb3;
+    font-family: inherit;
+    font-size: 14px;
+    width: 100%;
+    text-align: center;
+    outline: none;
+    letter-spacing: 0.8em; /* 密码位间距加大，更有仪式感 */
+    padding-bottom: 15px;
+    text-transform: uppercase;
+    transition: border-color 0.4s;
+    border-bottom: 1px solid #2d2a23;
+}
+
+#key-input:focus {
+    border-bottom: 1px solid #8c7e65; /* 聚焦时边框微亮 */
+}
+.auth-contact {
+    margin-top: 40px;
+    font-size: 7px;
+    color: #44413b; /* 稍微亮一点，别太暗了看不见 */
+    letter-spacing: 0.2em;
+    transition: color 0.8s ease;
+}
+/* 档案层样式 */
+#archive-layer {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background-color: #121210;
+    display: none; flex-direction: column; align-items: center;
+    z-index: 3000; padding-top: 80px; opacity: 0; transition: opacity 1.5s ease;
+    background-image:
+            radial-gradient(circle at center, rgba(45, 42, 35, 0.25) 0%, transparent 85%),
+            url('https://www.transparenttextures.com/patterns/asfalt-dark.png');
+    background-size: cover; box-sizing: border-box;
+}
+.archive-header { width: 85%; display: flex; justify-content: space-between; font-size: 9px; color: #4a453a; letter-spacing: 0.5em; border-bottom: 1px solid #1d1d1a; padding-bottom: 15px; margin-bottom: 50px; }
+.specimen-list { width: 85%; text-align: left; }
+.specimen-item {
+    display: flex;
+    align-items: center; /* 垂直居中 */
+    padding: 30px 0;
+    border-bottom: 1px solid rgba(45, 42, 35, 0.15);
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    color: #5a564d;
+    cursor: pointer;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    width: 100%; /* 确保撑满容器 */
+}
+.specimen-item:hover {
+    color: #d4cbb3; /* 悬停时显示出干枯火草的颜色 */
+    background: rgba(212, 203, 179, 0.02); /* 极弱的暖光 */
+    padding-left: 5px;
+}
+.specimen-item:hover .name {
+    color: #fff;
+}
+.specimen-item .id {
+    width: 20%; /* 增加一点宽度 */
+    color: #3d3a33;
+    flex-shrink: 0; /* 禁止缩放 */
+}
+.specimen-item .name {
+    width: 50%; /* 占据中间所有剩余空间 */
+    text-align: left; /* 强制靠左对齐 */
+    transition: color 0.4s;
+}
+
+.specimen-item .status {
+    width: 30%; /* 固定右侧状态栏宽度 */
+    text-align: right; /* 状态靠右 */
+    font-size: 9px;
+    flex-shrink: 0;
+}
+/* 预览图随鼠标移动 */
+#image-preview {
+		position: fixed; pointer-events: none; width: 320px; height: 420px;
+		background: #000; border: 1px solid #2d2a23; display: none;
+		z-index: 4000; transform: translate(20px, 20px);
+		background-size: cover; background-position: center;
+		filter: sepia(0.1) contrast(1.05); /* 让预览图带一点点暖调 */
+}
+
+/* 装饰性文字 */
+#protocol-status, #geo-coords { position: absolute; font-size: 8px; color: #3d3a33; letter-spacing: 0.4em; text-transform: uppercase; z-index: 1; }
+#protocol-status { top: 45px; left: 45px; }
+#geo-coords { bottom: 45px; right: 45px; }
+
+#report-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(18, 18, 16, 0.92); /* 半透明背景 */
+    backdrop-filter: blur(25px) brightness(0.7); /* 磨砂核心：模糊背景 */
+    -webkit-backdrop-filter: blur(25px) brightness(0.7);
+    display: none; /* 初始隐藏 */
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+    padding: 60px;
+    box-sizing: border-box;
+    justify-content: center;
+    pointer-events: all;
+    align-items: center;
+}
+
+#report-overlay[style*="opacity: 1"] .report-main-img {
+    filter: blur(0) sepia(0.15) contrast(1.1); /* 对焦完成 */
+}
+
+.report-content {
+    width: 90%;
+    max-width: 1200px;
+    display: grid;
+    grid-template-columns: 250px 1fr 250px; /* 三栏布局 */
+    gap: 40px;
+    align-items: start;
+}
+
+.report-left, .report-right {
+    margin-top: 100px;
+}
+
+.report-field {
+    margin-bottom: 40px;
+}
+
+.report-field label {
+    display: block;
+    font-size: 7px;
+    font-weight: 800;
+    color: #4a453a;
+    margin-bottom: 10px;
+    letter-spacing: 0.3em;
+}
+
+.report-field span {
+    font-size: 10px;
+    color: #888;
+    line-height: 1.6;
+}
+
+.report-main-img {
+    width: 100%;
+    height: 75vh;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    border: 1px solid #2d2a23;
+    box-shadow: none; /* 增加深邃的阴影 */
+        /* 核心精调：让图片带一点植物染色的陈旧感 */
+    filter: sepia(0.15) contrast(1.1) brightness(0.9);
+    transition: filter 1.5s ease, transform 1s ease;
+    outline: 10px solid rgba(0, 0, 0, 0.3);
+}
+
+.report-close {
+    position: absolute;
+    top: 60px;
+    right: 60px;
+    font-size: 9px;
+    color: #444;
+    cursor: pointer;
+    letter-spacing: 0.4em;
+    transition: color 0.3s;
+}
+
+.report-close:hover { color: #fff; }
+
+h2#rpt-id {
+    font-size: 24px;
+    font-weight: 400;
+    color: #fff;
+    margin: 0 0 20px 0;
+    letter-spacing: 0.2em;
+}
+
+#dust-layer {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 2; /* 放在内容后面 */
+    background: url('https://www.transparenttextures.com/patterns/stardust.png');
+    opacity: 0.08;
+    animation: dustMove 150s linear infinite;
+}
+
+@keyframes dustMove {
+    from { background-position: 0 0; }
+    to { background-position: 500px 500px; }
+}
+/* 报告右下角的复制询价按钮 */
+.copy-trigger {
+    font-size: 9px;
+    color: #4a453a;
+    cursor: pointer;
+    border: 1px dashed #2d2a23; /* 虚线更有手工票据、档案袋的感觉 */
+    padding: 15px;
+    text-align: center;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    margin-top: 30px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    background: transparent;
+}
+
+.copy-trigger:hover {
+    background: #8c7e65;
+
+        /* 文字颜色改为深炭褐色，确保对比度 */
+        color: #3d3a33;
+
+        /* 增加一个非常弱的发光效果，模拟萤石或矿物的质感 */
+        box-shadow: 0 0 15px rgba(140, 126, 101, 0.3);
+
+        border-style: solid;
+        border-color: #8c7e65;
+}
+
+/* 移动端简单适配：如果屏幕太小，调整间距 */
+@media (max-width: 768px) {
+    .report-content {
+        grid-template-columns: 1fr; /* 手机端改为单列 */
+        overflow-y: auto;
+        height: 80vh;
+    }
+    .report-left, .report-right { margin-top: 20px; }
+}
+
+/* 定义缓慢呼吸的有机光晕动画 */
+@keyframes breathingGlow {
+    0%, 100% {
+        background-size: 100% 100%;
+        background-position: center;
+    }
+    50% {
+        /* 在 50% 的时候光晕扩大，并轻微偏移 */
+        background-size: 130% 130%;
+        background-position: 45% 55%;
+    }
+}
