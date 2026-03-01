@@ -159,10 +159,21 @@ window.hidePreview = () => {
 };
 
 window.openReport = (id) => {
-    const item = ARCHIVE_DATA.find(d => d.id === id);
+    const container = document.querySelector('.split-container');
 
+    // 🚨 核心逻辑修复：如果点击的是当前已激活的 ID，并且分屏正开着，执行关闭！
+    if (currentActiveId === id && container.classList.contains('active')) {
+        window.closeInspection();
+        return;
+    }
+
+    const item = ARCHIVE_DATA.find(d => d.id === id);
     if (!item) return;
 
+    // 记录新的激活状态
+    currentActiveId = id;
+
+    // 填充数据
     document.getElementById('rpt-id').innerText = item.id;
     document.getElementById('rpt-material').innerText = item.report.material;
     document.getElementById('rpt-process').innerText = item.report.process;
@@ -171,7 +182,9 @@ window.openReport = (id) => {
     const imgContainer = document.getElementById('rpt-img');
     if (imgContainer) imgContainer.style.backgroundImage = `url('${item.preview_img}')`;
 
-    const container = document.querySelector('.split-container');
+    // 触发视觉高亮
+    updateListHighlight(id);
+
     if (container) {
         container.classList.add('active');
         playClick();
@@ -184,6 +197,8 @@ window.closeInspection = function() {
     const container = document.querySelector('.split-container');
     if (container && container.classList.contains('active')) {
         container.classList.remove('active');
+        currentActiveId = null; // 🚨 清除记录
+        updateListHighlight(null); // 🚨 清除视觉高亮
         playClick();
     }
 };
@@ -204,6 +219,19 @@ document.addEventListener('click', (e) => {
         }
     }
 });
+
+// 🚨 新增辅助函数：同步左侧列表的视觉状态
+function updateListHighlight(activeId) {
+    const items = document.querySelectorAll('.specimen-item');
+    items.forEach(item => {
+        const idSpan = item.querySelector('.id');
+        if (idSpan && idSpan.innerText === activeId) {
+            item.classList.add('is-active');
+        } else {
+            item.classList.remove('is-active');
+        }
+    });
+}
 
 // 9. 全局键盘逃生
 document.addEventListener('keydown', (e) => {

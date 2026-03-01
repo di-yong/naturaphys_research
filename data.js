@@ -24,5 +24,124 @@ const ARCHIVE_DATA = [
             coords: "25.0388° N, 102.7122° E",
             notes: "高度耐磨损结构。火草纤维与柞蚕丝交织，模拟了植物在地层中的压力演化。"
         }
+    },
+    {
+        id: "SP_003",
+        name: "FIRE_GRASS_WEAVE",
+        status: "// [ ARCHIVED ]",
+        category: "MINERAL", // 核心新增：定义分类
+        preview_img: "path/to/img2.jpg",
+        report: {
+            material: "WILD FIRE GRASS (火草) / HAND-TWISTED FIBER",
+            process: "ASH-ALKALINE SCOURING / MANUAL COMPRESSION",
+            coords: "25.0388° N, 102.7122° E",
+            notes: "高度耐磨损结构。火草纤维与柞蚕丝交织，模拟了植物在地层中的压力演化。"
+        }
+    },
+    {
+        id: "SP_002",
+        name: "FIRE_GRASS_WEAVE",
+        status: "// [ ARCHIVED ]",
+        category: "MINERAL", // 核心新增：定义分类
+        preview_img: "path/to/img2.jpg",
+        report: {
+            material: "WILD FIRE GRASS (火草) / HAND-TWISTED FIBER",
+            process: "ASH-ALKALINE SCOURING / MANUAL COMPRESSION",
+            coords: "25.0388° N, 102.7122° E",
+            notes: "高度耐磨损结构。火草纤维与柞蚕丝交织，模拟了植物在地层中的压力演化。"
+        }
+    },
+    {
+        id: "SP_002",
+        name: "FIRE_GRASS_WEAVE",
+        status: "// [ ARCHIVED ]",
+        category: "MINERAL", // 核心新增：定义分类
+        preview_img: "path/to/img2.jpg",
+        report: {
+            material: "WILD FIRE GRASS (火草) / HAND-TWISTED FIBER",
+            process: "ASH-ALKALINE SCOURING / MANUAL COMPRESSION",
+            coords: "25.0388° N, 102.7122° E",
+            notes: "高度耐磨损结构。火草纤维与柞蚕丝交织，模拟了植物在地层中的压力演化。"
+        }
+    },
+
+    {
+        id: "SP_002",
+        name: "FIRE_GRASS_WEAVE",
+        status: "// [ ARCHIVED ]",
+        category: "MINERAL", // 核心新增：定义分类
+        preview_img: "path/to/img2.jpg",
+        report: {
+            material: "WILD FIRE GRASS (火草) / HAND-TWISTED FIBER",
+            process: "ASH-ALKALINE SCOURING / MANUAL COMPRESSION",
+            coords: "25.0388° N, 102.7122° E",
+            notes: "高度耐磨损结构。火草纤维与柞蚕丝交织，模拟了植物在地层中的压力演化。"
+        }
+    },
+
+    {
+	      id: "SP_002",
+	      name: "FIRE_GRASS_WEAVE",
+	      status: "// [ ARCHIVED ]",
+	      category: "MINERAL", // 核心新增：定义分类
+	      preview_img: "path/to/img2.jpg",
+	      report: {
+	          material: "WILD FIRE GRASS (火草) / HAND-TWISTED FIBER",
+	          process: "ASH-ALKALINE SCOURING / MANUAL COMPRESSION",
+	          coords: "25.0388° N, 102.7122° E",
+	          notes: "高度耐磨损结构。火草纤维与柞蚕丝交织，模拟了植物在地层中的压力演化。"
+	      }
+	  },
+    {
+	      id: "SP_002",
+	      name: "FIRE_GRASS_WEAVE",
+	      status: "// [ ARCHIVED ]",
+	      category: "MINERAL", // 核心新增：定义分类
+	      preview_img: "path/to/img2.jpg",
+	      report: {
+	          material: "WILD FIRE GRASS (火草) / HAND-TWISTED FIBER",
+	          process: "ASH-ALKALINE SCOURING / MANUAL COMPRESSION",
+	          coords: "25.0388° N, 102.7122° E",
+	          notes: "高度耐磨损结构。火草纤维与柞蚕丝交织，模拟了植物在地层中的压力演化。"
+	      }
+	  },
+    {
+        id: "SP_002",
+        name: "FIRE_GRASS_WEAVE",
+        status: "// [ ARCHIVED ]",
+        category: "MINERAL", // 核心新增：定义分类
+        preview_img: "path/to/img2.jpg",
+        report: {
+            material: "WILD FIRE GRASS (火草) / HAND-TWISTED FIBER",
+            process: "ASH-ALKALINE SCOURING / MANUAL COMPRESSION",
+            coords: "25.0388° N, 102.7122° E",
+            notes: "高度耐磨损结构。火草纤维与柞蚕丝交织，模拟了植物在地层中的压力演化。"
+        }
+    },
+    {
+	      id: "SP_002",
+	      name: "FIRE_GRASS_WEAVE",
+	      status: "// [ ARCHIVED ]",
+	      category: "MINERAL", // 核心新增：定义分类
+	      preview_img: "path/to/img2.jpg",
+	      report: {
+	          material: "WILD FIRE GRASS (火草) / HAND-TWISTED FIBER",
+	          process: "ASH-ALKALINE SCOURING / MANUAL COMPRESSION",
+	          coords: "25.0388° N, 102.7122° E",
+	          notes: "高度耐磨损结构。火草纤维与柞蚕丝交织，模拟了植物在地层中的压力演化。"
+	      }
+    },
+    {
+        id: "SP_002",
+        name: "FIRE_GRASS_WEAVE",
+        status: "// [ ARCHIVED ]",
+        category: "MINERAL", // 核心新增：定义分类
+        preview_img: "path/to/img2.jpg",
+        report: {
+            material: "WILD FIRE GRASS (火草) / HAND-TWISTED FIBER",
+            process: "ASH-ALKALINE SCOURING / MANUAL COMPRESSION",
+            coords: "25.0388° N, 102.7122° E",
+            notes: "高度耐磨损结构。火草纤维与柞蚕丝交织，模拟了植物在地层中的压力演化。"
+        }
     }
 ];
