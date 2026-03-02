@@ -100,7 +100,15 @@ h1 {
 
 .manifesto span { opacity: 0; display: inline; will-change: opacity, color; transition: opacity 1.5s ease-out, color 3.5s ease; color: #88857e; }
 .manifesto span.faded { color: #2a2825; }
-
+#manifesto-text {
+    /* 模仿 CCP 的排版，可以稍微缩小字号，增加行高 */
+    font-size: 11px;
+    line-height: 2.2;
+    letter-spacing: 0.25em;
+    color: #4a453a;
+    pointer-events: none; /* 彻底不可点击 */
+    user-select: none;
+}
 /* 授权验证样式 */
 #access-trigger {
 		position: absolute;
@@ -162,27 +170,9 @@ h1 {
     letter-spacing: 0.5em;
     font-size: 8px;
 }
-#key-input {
-    background: transparent;
-    border: none;
-    border-bottom: 1px solid #3d3a33;
-    /* 文字颜色提亮，给用户一种正在输入密码的即时反馈 */
-    color: #d4cbb3;
-    font-family: inherit;
-    font-size: 14px;
-    width: 100%;
-    text-align: center;
-    outline: none;
-    letter-spacing: 0.8em; /* 密码位间距加大，更有仪式感 */
-    padding-bottom: 15px;
-    text-transform: uppercase;
-    transition: border-color 0.4s;
-    border-bottom: 1px solid #2d2a23;
-}
 
-#key-input:focus {
-    border-bottom: 1px solid #8c7e65; /* 聚焦时边框微亮 */
-}
+
+
 .auth-contact {
     margin-top: 40px;
     font-size: 7px;
@@ -675,6 +665,10 @@ h2#rpt-id {
         display: none !important;
     }
 
+    .report-main-img {
+        height: 45vh; /* 手机端短一点，给文字留空间 */
+    }
+
     /* 2. 强制恢复系统光标，方便手指点击 */
     body, html {
         cursor: auto !important;
@@ -696,7 +690,7 @@ h2#rpt-id {
         padding: 15px 30px; /* 增加感应面积 */
         border: 1px solid rgba(140, 126, 101, 0.2); /* 给手机端加个微弱边框，防止用户不知道点哪 */
     }
-
+}
     /* 5. 详情页图片：确保在手机屏上是撑满的 */
 
 
@@ -707,13 +701,6 @@ h2#rpt-id {
     100% { top: 100%; opacity: 0; }
 }
 
-
-/* --- [ 手机端微调 ] --- */
-@media (max-width: 768px) {
-    .report-main-img {
-        height: 45vh; /* 手机端短一点，给文字留空间 */
-    }
-}
 
 ::-webkit-scrollbar {
     width: 4px;  /* 纵向滚动条弄细一点，更有实验室精密感 */
@@ -733,4 +720,137 @@ h2#rpt-id {
 * {
     scrollbar-width: thin;
     scrollbar-color: rgba(140, 126, 101, 0.2) transparent;
+}
+
+#sync-terminal {
+    position: absolute;
+    top: 100%; /* 紧贴打字机底部边界 */
+    left: 0;
+    width: 100%; /* 占满父容器宽度，不留偏移余地 */
+
+    /* 这里不要写 display，由 JS 控制 */
+    justify-content: center; /* 内部元素绝对居中 */
+    align-items: flex-end; /* 文字和横线底边平齐 */
+    gap: 15px;
+    margin-top: 35px; /* 往下推的安全距离 */
+    z-index: 10;
+    white-space: nowrap;
+}
+
+.terminal-label {
+    font-size: 8px;
+    color: #4a453a;
+    letter-spacing: 0.3em;
+    padding-bottom: 2px;
+}
+
+#key-input {
+    background: transparent !important;
+    border: none !important;
+    border-bottom: 1px solid rgba(140, 126, 101, 0.4) !important;
+    color: #4a453a;
+    font-family: inherit;
+    font-size: 14px;
+    width: 60px; /* 锁死短线 */
+    text-align: center;
+    outline: none;
+    letter-spacing: 0.2em;
+    padding: 0 0 2px 0;
+    text-transform: uppercase;
+    /* 严禁在这里写 transition: all，只允许颜色和宽度变化 */
+    transition: border-color 0.6s ease, width 0.6s ease;
+}
+
+#key-input:focus {
+    width: 60px;
+    border-bottom: 1px solid rgba(140, 126, 101, 0.8) !important;
+}
+
+#nav-system {
+    position: fixed;
+    bottom: 50px;
+    right: 50px;
+    text-align: right;
+    z-index: 9999;
+    transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform, opacity;
+}
+
+#menu-trigger {
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    color: #4a453a; /* 非常暗，像影子 */
+    cursor: pointer;
+    transition: color 0.5s ease, letter-spacing 0.5s ease;
+    padding-top: 20px; /* 增加与上方选项的物理间距 */
+    user-select: none;
+}
+
+#menu-trigger:hover {
+    color: #d4cbb3; /* 鼠标移上去才亮起 */
+
+}
+
+#menu-options {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* 增加选项之间的间距 */
+    margin-bottom: 30px; /* 核心：彻底拉开与 [ MENU_SYSTEM ] 的距离 */
+    transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translateY(10px); /* 初始位置略微下沉 */
+}
+
+/* 菜单激活状态 */
+#nav-system.active #menu-options {
+		display: flex;
+    visibility: visible !important;
+    opacity: 1 !important;
+    transform: translateY(0); /* 向上滑动到位 */
+}
+
+.menu-item {
+    font-size: 10px;
+    letter-spacing: 0.5em;
+    color: #8c7e65;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateX(10px); /* 初始向右偏移 */
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* 当父级 active 时，子元素梯次出现 */
+#nav-system.active .menu-item {
+    opacity: 0.6;
+    transform: translateX(0);
+}
+
+/* 梯次延迟：制造高级感的关键 */
+#nav-system.active .menu-item:nth-child(1) { transition-delay: 0.1s; }
+#nav-system.active .menu-item:nth-child(2) { transition-delay: 0.2s; }
+#nav-system.active .menu-item:nth-child(3) { transition-delay: 0.3s; }
+
+
+.menu-item:hover {
+    opacity: 1 !important;
+    color: #d4cbb3;
+    transform: translateX(-8px) !important; /* 悬停向左微滑 */
+}
+/* 当进入档案层时，菜单系统进入“静默模式” */
+#nav-system.in-archive {
+    bottom: 30px !important; /* 强制下压，远离列表文字 */
+    right: 30px !important;
+    opacity: 0.3; /* 进入静默模式，几乎半透明 */
+    transform: scale(0.85); /* 整体缩小 15%，显得更精致 */
+    transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1); /* 极其丝滑的慢动作 */
+    pointer-events: auto;
+}
+
+#nav-system.in-archive:hover {
+    opacity: 1; /* 只有鼠标移上去时才重新亮起 */
+    transform: scale(1); /* 恢复大小 */
+}
+
+/* 档案层开启时，菜单项的颜色可以微调以适配列表背景 */
+#nav-system.in-archive .menu-item {
+    color: #8c7e65;
 }
