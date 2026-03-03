@@ -23,7 +23,7 @@ const playClick = () => {
     elements.clickSound.play().catch(() => {});
 };
 
-const text = "WE DO NOT PRODUCE FASHION; WE DOCUMENT MATERIAL EVOLUTION.\nTHE FIBER IS THE WITNESS. THE SOIL IS THE ARCHIVE.";
+//const text = "WE DO NOT PRODUCE FASHION; WE DOCUMENT MATERIAL EVOLUTION.\nTHE FIBER IS THE WITNESS. THE SOIL IS THE ARCHIVE.";
 let index = 0;
 
 // 1. 自动生成列表
@@ -42,23 +42,23 @@ function renderArchive() {
     `).join('');
 }
 
-// 2. 打字机
-function typeWriter() {
-    if (index < text.length && elements.manifesto) {
-        const char = text.charAt(index);
-        const span = document.createElement('span');
-        span.innerHTML = char === '\n' ? '<br>' : char;
-        elements.manifesto.appendChild(span);
-        setTimeout(() => {
-            span.style.opacity = "1";
-            setTimeout(() => span.classList.add('faded'), 1000);
-        }, 10);
-        index++;
-        setTimeout(typeWriter, (char === '.' || char === ',') ? 500 : Math.random() * 80 + 40);
-    } else if (elements.trigger) {
-        setTimeout(() => elements.trigger.style.opacity = "1", 1000);
-    }
-}
+//// 2. 打字机
+//function typeWriter() {
+//    if (index < text.length && elements.manifesto) {
+//        const char = text.charAt(index);
+//        const span = document.createElement('span');
+//        span.innerHTML = char === '\n' ? '<br>' : char;
+//        elements.manifesto.appendChild(span);
+//        setTimeout(() => {
+//            span.style.opacity = "1";
+//            setTimeout(() => span.classList.add('faded'), 1000);
+//        }, 10);
+//        index++;
+//        setTimeout(typeWriter, (char === '.' || char === ',') ? 500 : Math.random() * 80 + 40);
+//    } else if (elements.trigger) {
+//        setTimeout(() => elements.trigger.style.opacity = "1", 1000);
+//    }
+//}
 
 // 3. 初始加载逻辑
 window.onload = () => {
@@ -97,7 +97,7 @@ if (elements.trigger) {
                 terminal.style.transition = "opacity 1.5s ease";
                 terminal.style.opacity = "1";
 
-                if (elements.keyInput) elements.keyInput.focus();
+                if (elements.keyInput) elements.keyInput;
             }, 50);
         }
     };
