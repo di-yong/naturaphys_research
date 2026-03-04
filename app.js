@@ -297,7 +297,7 @@ collectionsBtn.onclick = () => {
         setTimeout(() => {
             terminal.style.transition = "opacity 1.5s ease";
             terminal.style.opacity = "1";
-            document.getElementById('key-input').focus();
+            //document.getElementById('key-input').focus();
         }, 400);
     }
 };
@@ -400,7 +400,7 @@ const originalCollectionLogic = () => {
         terminal.style.display = 'flex';
         setTimeout(() => {
             terminal.style.opacity = "1";
-            document.getElementById('key-input').focus();
+           // document.getElementById('key-input').focus();
         }, 50);
     }
 };

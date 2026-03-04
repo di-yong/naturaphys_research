@@ -68,24 +68,23 @@ body {
     transform: translate(-50%, -50%);
     text-align: center;
     display: block !important; /* 强制声明 block，防止被其他样式污染 */
-    pointer-events: none;
+
 
         /* 核心属性 2：禁止选中文字，让它看起来更像一个印刷上去的符号或图片 */
         user-select: none;
 }
 
 h1 {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    font-weight: 400;
-    font-size: 11px;
-    letter-spacing: 1.2em;
+    font-family: "Inter", sans-serif;
+    font-weight: 100;
+    font-size: 14px;
+    letter-spacing: 1em;
     color: #dcdcdc;
     text-transform: uppercase;
     opacity: 0;
     transition: opacity 3s ease;
     display: block;
     width: 100%;
-    margin-right: -1.2em;
 		pointer-events: none;
 
     /* 核心属性 2：禁止选中文字，让它看起来更像一个印刷上去的符号或图片 */
