@@ -4,7 +4,7 @@ const ARCHIVE_DATA = [
         name: "SOIL_WASHED_OVERCOAT",
         status: "// [ AVAILABLE / 04 ]",
         category: "ORGANIC", // 核心新增：定义分类
-        preview_img: "path/to/img1.jpg",
+        preview_img: "assets/images1.jpg",
         report: {
             material: "TUSSAH SILK (柞蚕丝) / WILD HARVESTED",
             process: "30-DAY FULVIC ACID FERMENTATION / NATURAL OXIDATION",

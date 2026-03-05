@@ -204,70 +204,49 @@ h1 {
 }
 
 .split-container {
-    display: flex;
-    flex-direction: row; /* 横向排列 */
-    width: 100%;
-    overflow: hidden;
-    height: calc(100vh - 160px);
-    gap: 0;
-    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    display: block; /* 弃用 flex */
+        position: relative;
+        width: 100%;
+        height: calc(100vh - 160px);
+        perspective: 1000px; /* 为 3D 退后效果做准备 */
 }
 
 .specimen-list-wrapper {
-    flex: 1;
-    overflow-y: auto;
-    overflow-x: hidden;
-    padding-right: 20px;
-    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-    /* 确保它是一个可以接收点击的容器 */
-    pointer-events: all;
-    z-index: 5;
-    mask-image: linear-gradient(to bottom,
-            transparent 0%,
-            black 5%,
-            black 95%,
-            transparent 100%
-        );
-        -webkit-mask-image: linear-gradient(to bottom,
-            transparent 0%,
-            black 5%,
-            black 95%,
-            transparent 100%
-        );
+    width: 100%;
+        height: 100%;
+        transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1),
+                    filter 1.2s ease,
+                    opacity 1.2s ease;
+        z-index: 1;
 }
 
 /* --- 3. 右侧详情面板 (取代 Overlay) --- */
 #inspection-panel {
-    flex: 0;
-    width: 0;
-    min-width: 0;
-    opacity: 0;
-    visibility: hidden;
-    overflow-x: hidden;
-    overflow-y: auto;
-    background: rgba(18, 18, 16, 0.4);
-    border-left: 0px solid rgba(140, 126, 101, 0.2);
-    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-    /* 关键：未开启时禁止一切鼠标交互，防止挡住列表 */
-    position: relative;
-    z-index: 100;
-    pointer-events: auto !important; /* 允许交互 */
+    position: absolute;
+        top: 0;
+        right: 0;
+        width: 100%; /* 全屏覆盖 */
+        height: 100%;
+        background: transparent; /* 容器透明，靠内部元素着色 */
+        z-index: 100;
+
+        opacity: 0;
+        visibility: hidden;
+        transform: translateX(30px); /* 初始位移 */
+        transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* --- 4. 激活分屏状态 --- */
 .split-container.active .specimen-list-wrapper {
-    flex: 0 0 380px; /* 列表收缩到左侧固定宽度 */
-    position: relative;
-    z-index: 101; /* 必须比面板层级略高，才能点击空白处回弹 */
-    pointer-events: auto !important;
+    transform: scale(0.95) translateZ(-50px);
+        filter: blur(8px) brightness(0.3) grayscale(1);
+        opacity: 0.4;
+        pointer-events: none; /* 防止点击底部的列表 */
 }
 .split-container.active #inspection-panel {
-    flex: 1; /* 详情区展开 */
     opacity: 1;
-    visibility: visible;
-    border-left: 1px solid rgba(140, 126, 101, 0.2);
-    padding: 0 40px;
-    pointer-events: auto;
+        visibility: visible;
+        transform: translateX(0);
 }
 .specimen-list-wrapper::-webkit-scrollbar {
     width: 2px; /* 极细 */
@@ -285,8 +264,16 @@ h1 {
 
 /* --- 5. 详情页内部精密排版 --- */
 .inspection-content {
-    max-width: 1100px;
-    margin: 0 auto;
+    width: 85%; /* 故意留出 15% 缝隙透出底部的模糊列表 */
+    height: 100%;
+    margin-left: auto; /* 靠右对齐 */
+    background: rgba(18, 18, 16, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-left: 1px solid rgba(140, 126, 101, 0.2);
+    padding: 60px;
+    display: flex;
+    flex-direction: column;
 }
 
 .inspection-header {
@@ -326,20 +313,14 @@ h1 {
 
 .inspection-body {
     display: grid;
-    grid-template-columns: 1.2fr 1fr; /* 图片与文字并列 */
-    gap: 50px;
-    align-items: start;
+        grid-template-columns: 1fr 350px; /* 大图占左边，文字缩在右边一小条 */
+        gap: 80px;
+        height: 100%;
+        align-items: start;
+        padding-top: 20px;
 }
 
-/* 图片适配分屏高度 */
-.inspection-body .report-main-img {
-    width: 100%;
-    height: 60vh;
-    border: 1px solid rgba(45, 42, 35, 0.3);
-    background-size: cover;
-    filter: sepia(0.1) contrast(1.1);
-    transition: filter 1s ease;
-}
+
 
 .report-info {
     display: flex;
@@ -525,7 +506,49 @@ h1 {
 #protocol-status, #geo-coords { position: absolute; font-size: 8px; color: #3d3a33; letter-spacing: 0.4em; text-transform: uppercase; z-index: 1; }
 #protocol-status { top: 45px; left: 45px; }
 #geo-coords { bottom: 45px; right: 45px; }
+.report-main-img {
+    width: 100%;
+        height: 70vh;
+        /* 核心改动：增加一个内阴影，让图片看起来像是陷在面板里的 */
+        box-shadow: inset 0 0 50px rgba(0,0,0,0.8);
+        border: 1px solid rgba(140, 126, 101, 0.1);
+        position: relative;
+}
 
+/* 图片适配分屏高度 */
+.inspection-body .report-main-img {
+    width: 100%;
+    height: 60vh;
+    border: 1px solid rgba(45, 42, 35, 0.3);
+    /* 核心：确保它是背景图 */
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+
+        filter: sepia(0.1) contrast(1.1);
+
+        /* 核心：添加进入和退出放大的丝滑过渡 */
+        transition: background-size 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+                    filter 1s ease;
+
+        /* 鼠标放上去时，变成十字准星，暗示可以进行“精度扫描” */
+        cursor: crosshair;
+}
+
+.inspection-body .report-main-img.zoom-active {
+    background-size: 250%;
+    /* 放大时稍微降低复古滤镜，让材质更清晰真实 */
+    filter: sepia(0) contrast(1.2) brightness(1.05);
+}
+
+.report-main-img::after {
+    content: "SCAN_AUTH_VERIFIED // 31.233°N 121.473°E";
+    position: absolute;
+    bottom: -25px;
+    right: 0;
+    font-size: 7px;
+    color: #4a453a;
+}
 #report-overlay {
     position: fixed;
     top: 0; left: 0;
@@ -558,7 +581,7 @@ h1 {
 }
 
 .report-left, .report-right {
-    margin-top: 100px;
+    margin-top: 0 !important;
 }
 
 .report-field {
@@ -580,23 +603,6 @@ h1 {
     line-height: 1.6;
 }
 
-.report-main-img {
-    width: 100%;
-    height: 75vh; /* 确保 PC 和手机都有基础高度 */
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    border: 1px solid rgba(45, 42, 35, 0.3);
-    outline: 10px solid rgba(0, 0, 0, 0.3);
-
-    /* 关键属性：必须为 relative，否则扫描线会飞到页面顶部 */
-    position: relative;
-    overflow: hidden;
-
-    background-color: rgba(0, 0, 0, 0.2);
-    filter: sepia(0.15) contrast(1.1) brightness(0.8) blur(5px);
-    transition: filter 1.2s cubic-bezier(0.16, 1, 0.3, 1);
-}
 
 /* 当 Overlay 开启时，触发对焦动画 */
 #report-overlay[style*="opacity: 1"] .report-main-img {

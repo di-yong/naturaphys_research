@@ -200,7 +200,7 @@ window.openReport = (id) => {
 
     const item = ARCHIVE_DATA.find(d => d.id === id);
     if (!item) return;
-
+document.body.style.cursor = "wait";
     // 记录新的激活状态
     currentActiveId = id;
 
@@ -212,7 +212,14 @@ window.openReport = (id) => {
 
     const imgContainer = document.getElementById('rpt-img');
     if (imgContainer) imgContainer.style.backgroundImage = `url('${item.preview_img}')`;
+setTimeout(() => {
+        document.body.style.cursor = "none";
+        container.classList.add('active');
+        playClick();
 
+        // 增加一个有趣的细节：控制台输出
+        console.log(`%c ACCESSING_DATA: ${item.id} `, 'background: #222; color: #8c7e65');
+    }, 50);
     // 触发视觉高亮
     updateListHighlight(id);
 
@@ -404,3 +411,39 @@ const originalCollectionLogic = () => {
         }, 50);
     }
 };
+
+// 显微镜追踪引擎 (Microscopic Tracking Engine)
+const mainImg = document.querySelector('.report-main-img');
+
+if (mainImg) {
+    // 鼠标移动时：计算相对坐标，移动背景
+    mainImg.addEventListener('mousemove', function(e) {
+        // 如果没有放大，不执行
+        if (!this.classList.contains('zoom-active')) return;
+
+        const rect = this.getBoundingClientRect();
+        // 计算鼠标在图片内的百分比位置
+        const x = ((e.clientX - rect.left) / rect.width) * 100;
+        const y = ((e.clientY - rect.top) / rect.height) * 100;
+
+        // 实时改变背景的聚焦点
+        this.style.backgroundPosition = `${x}% ${y}%`;
+    });
+
+    // 鼠标进入时：激活放大模式
+    mainImg.addEventListener('mouseenter', function() {
+        this.classList.add('zoom-active');
+        // 可选：如果你之前屏蔽了自定义光标，可以在这里让十字准星更明显
+    });
+
+    // 鼠标离开时：恢复原状和居中
+    mainImg.addEventListener('mouseleave', function() {
+        this.classList.remove('zoom-active');
+        // 延迟恢复居中，配合 CSS 的 transition 会有极强的镜头回缩感
+        setTimeout(() => {
+            if (!this.classList.contains('zoom-active')) {
+                this.style.backgroundPosition = 'center';
+            }
+        }, 500);
+    });
+}
