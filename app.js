@@ -30,35 +30,53 @@ let index = 0;
 function renderArchive() {
     if (!elements.list) return;
     elements.list.innerHTML = ARCHIVE_DATA.map(item => `
-        <div class="specimen-item"
-             onmouseover="showPreview('${item.preview_img}')"
-             onmouseleave="hidePreview()"
-             onclick="openReport('${item.id}')">
-            <div class="specimen-tag">${item.category || 'DATA'}</div>
-            <span class="id">${item.id}</span>
-            <span class="name">${item.name}</span>
-            <span class="status">${item.status}</span>
-        </div>
-    `).join('');
+
+       <div class="specimen-folder" onclick="openReport('${item.id}')">
+               <div class="folder-texture"></div>
+
+               <div class="folder-header">
+                   <div class="header-left">
+                       <div class="status-indicator"></div>
+                       <span class="folder-id">${item.id}</span>
+                   </div>
+                   <div class="header-right">
+                       <span class="folder-tag">${item.category || 'DATA'}</span>
+                       <span class="folder-index">// 0${ARCHIVE_DATA.indexOf(item) + 1}</span>
+                   </div>
+               </div>
+
+               <div class="folder-body">
+                   <div class="body-content">
+                       <div class="preview-container">
+                           <div class="mini-preview" data-src="${item.preview_img}"></div>
+                           <div class="scan-overlay"></div>
+                       </div>
+
+                       <div class="mini-metadata">
+                           <div class="meta-header">PROPERTY_DECRYPTION</div>
+                           <div class="meta-row"><label>MATERIAL</label> <span>${item.report.material}</span></div>
+                           <div class="meta-row"><label>STRESS_LVL</label> <span>${(Math.random()*20 + 80).toFixed(1)}%</span></div>
+                           <div class="meta-row"><label>LATITUDE</label> <span>31.233°N</span></div>
+                           <div class="meta-footer">CRC_CHECKSUM: OK // AUTH_LEVEL_4</div>
+                       </div>
+                   </div>
+               </div>
+           </div>
+       `).join('');
+
+       const folders = elements.list.querySelectorAll('.specimen-folder');
+           folders.forEach(folder => {
+               folder.addEventListener('mouseenter', () => {
+                   const img = folder.querySelector('.mini-preview');
+                   if (img && img.dataset.src) {
+                       img.style.backgroundImage = `url('${img.dataset.src}')`;
+                       img.style.opacity = "1"; // 确保可见
+                       delete img.dataset.src;
+                   }
+               });
+           });
 }
 
-//// 2. 打字机
-//function typeWriter() {
-//    if (index < text.length && elements.manifesto) {
-//        const char = text.charAt(index);
-//        const span = document.createElement('span');
-//        span.innerHTML = char === '\n' ? '<br>' : char;
-//        elements.manifesto.appendChild(span);
-//        setTimeout(() => {
-//            span.style.opacity = "1";
-//            setTimeout(() => span.classList.add('faded'), 1000);
-//        }, 10);
-//        index++;
-//        setTimeout(typeWriter, (char === '.' || char === ',') ? 500 : Math.random() * 80 + 40);
-//    } else if (elements.trigger) {
-//        setTimeout(() => elements.trigger.style.opacity = "1", 1000);
-//    }
-//}
 
 // 3. 初始加载逻辑
 window.onload = () => {
@@ -191,53 +209,68 @@ window.hidePreview = () => {
 
 window.openReport = (id) => {
     const container = document.querySelector('.split-container');
+		const wrapper = document.querySelector('.specimen-list-wrapper');
+        // 如果点击的是已经打开的那个，就关闭它
+        if (!container.classList.contains('active')) {
+                if (currentActiveId === id) {
+                    // 这里可以处理文件夹的收起动画逻辑，如果不写，点击就只是保持展开
+                    return;
+                }
+            }
 
-    // 🚨 核心逻辑修复：如果点击的是当前已激活的 ID，并且分屏正开着，执行关闭！
-    if (currentActiveId === id && container.classList.contains('active')) {
-        window.closeInspection();
-        return;
-    }
+        const item = ARCHIVE_DATA.find(d => d.id === id);
+        if (!item) return;
 
-    const item = ARCHIVE_DATA.find(d => d.id === id);
-    if (!item) return;
-document.body.style.cursor = "wait";
-    // 记录新的激活状态
-    currentActiveId = id;
+        // 记录状态
+        currentActiveId = id;
 
-    // 填充数据
-    document.getElementById('rpt-id').innerText = item.id;
-    document.getElementById('rpt-material').innerText = item.report.material;
-    document.getElementById('rpt-process').innerText = item.report.process;
-    document.getElementById('rpt-notes').innerText = item.report.notes;
+        // 1. 填充数据（确保这部分没报错）
+        //document.getElementById('rpt-id').innerText = item.id;
+        document.getElementById('rpt-material').innerText = item.report.material;
+        document.getElementById('rpt-process').innerText = item.report.process;
+        document.getElementById('rpt-notes').innerText = item.report.notes;
 
-    const imgContainer = document.getElementById('rpt-img');
-    if (imgContainer) imgContainer.style.backgroundImage = `url('${item.preview_img}')`;
-setTimeout(() => {
-        document.body.style.cursor = "none";
+        const imgContainer = document.getElementById('rpt-img');
+        if (imgContainer) imgContainer.style.backgroundImage = `url('${item.preview_img}')`;
+				if (wrapper) {
+		        wrapper.style.transform = "";
+		        wrapper.style.opacity = "";
+		    }
+        // 2. 视觉激活
+        // 核心：无论当前是否 active，都重新强制加一次，并触发高亮
         container.classList.add('active');
+        // 建议同时给 container 加上你的 15% 坍缩类名
+        container.classList.add('is-collapsed-mode');
+
+        updateListHighlight(id);
         playClick();
 
-        // 增加一个有趣的细节：控制台输出
-        console.log(`%c ACCESSING_DATA: ${item.id} `, 'background: #222; color: #8c7e65');
-    }, 50);
-    // 触发视觉高亮
-    updateListHighlight(id);
-
-    if (container) {
-        container.classList.add('active');
-        playClick();
-    }
+        console.log(`[SYSTEM]: Switch to Specimen ${id}`);
 };
 
 // 7. 终极关闭逻辑：唯一且强制挂载全局
 window.closeInspection = function() {
-    console.log("System: Executing Collapse...");
+    console.log("System: Executing Collapse and Resetting List...");
     const container = document.querySelector('.split-container');
+		const wrapper = document.querySelector('.specimen-list-wrapper');
+
     if (container && container.classList.contains('active')) {
+        // 1. 核心修复：移除所有干扰样式的类名
         container.classList.remove('active');
-        currentActiveId = null; // 🚨 清除记录
-        updateListHighlight(null); // 🚨 清除视觉高亮
+        container.classList.remove('is-collapsed-mode');
+				const wrapper = document.querySelector('.specimen-list-wrapper');
+
+        const listWrapper = document.querySelector('.specimen-list-wrapper');
+        if (wrapper) {
+	          wrapper.style.transform = "";
+	          wrapper.style.opacity = "";
+	          wrapper.style.filter = "";
+	      }
+
+        currentActiveId = null;
+        updateListHighlight(null);
         playClick();
+        console.log("[SYSTEM]: Archive view restored to default.");
     }
 };
 
@@ -260,9 +293,9 @@ document.addEventListener('click', (e) => {
 
 // 🚨 新增辅助函数：同步左侧列表的视觉状态
 function updateListHighlight(activeId) {
-    const items = document.querySelectorAll('.specimen-item');
+    const items = document.querySelectorAll('.specimen-folder');
     items.forEach(item => {
-        const idSpan = item.querySelector('.id');
+        const idSpan = item.querySelector('.folder-id');
         if (idSpan && idSpan.innerText === activeId) {
             item.classList.add('is-active');
         } else {
@@ -447,3 +480,136 @@ if (mainImg) {
         }, 500);
     });
 }
+
+document.addEventListener('click', (e) => {
+    const folder = e.target.closest('.specimen-folder');
+    if (!folder) return;
+
+    const container = document.querySelector('.split-container');
+
+    // 只有当分屏已经打开（15%模式）时，我们才接管点击逻辑
+    if (container.classList.contains('active')) {
+        const id = folder.querySelector('.folder-id').innerText;
+
+        // 如果点的是新 ID，才切换；点的是当前 ID，不做任何事（防止闪烁关闭）
+        if (currentActiveId !== id) {
+            window.openReport(id);
+        }
+
+        e.preventDefault();
+        e.stopPropagation(); // 阻止触发 HTML 原生的 onclick，防止二次执行
+    }
+});
+// 在 specimen-folder 的事件监听中
+const folders = document.querySelectorAll('.specimen-folder');
+
+folders.forEach(folder => {
+    folder.addEventListener('mouseenter', () => {
+        const img = folder.querySelector('.mini-preview.lazy-load');
+        if (img && img.dataset.src) {
+            // 执行加载
+            img.style.backgroundImage = `url('${img.dataset.src}')`;
+            img.classList.remove('lazy-load');
+            delete img.dataset.src;
+
+            // 顾问建议：加一个淡入动画
+            img.style.animation = "dataReveal 0.8s ease forwards";
+        }
+    });
+});
+document.querySelectorAll('.specimen-folder').forEach(folder => {
+    folder.addEventListener('mouseenter', (e) => {
+        const folderElement = e.currentTarget;
+        const wrapper = document.querySelector('.specimen-list-wrapper');
+
+        // 给 CSS 展开预留一点点解析时间
+        setTimeout(() => {
+            const rect = folderElement.getBoundingClientRect();
+            const viewHeight = window.innerHeight;
+            const expandHeight = 520;
+
+            // 判断底部是否溢出
+            if (rect.top + expandHeight > viewHeight) {
+                // 计算需要滚动的增量：让文件夹的顶部滚动到屏幕上方 10% 的位置，确保全显
+                const scrollAmount = wrapper.scrollTop + (rect.top - 100);
+
+                wrapper.scrollTo({
+                    top: scrollAmount,
+                    behavior: 'smooth'
+                });
+            }
+        }, 100); // 100ms 延迟，等 CSS 高度展开动画开始
+    });
+});
+
+// 当鼠标离开整个列表区域时，重置滚动位置（可选，看你审美）
+document.querySelector('.specimen-list').addEventListener('mouseleave', () => {
+    document.querySelector('.specimen-list-wrapper').scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+});
+
+document.querySelectorAll('.specimen-folder').forEach(folder => {
+    folder.addEventListener('mouseenter', (e) => {
+        const folderEl = e.currentTarget;
+        const wrapper = document.querySelector('.specimen-list-wrapper');
+
+        // 稍微延迟，等待 CSS 的 520px 展开动画开始
+        setTimeout(() => {
+            const rect = folderEl.getBoundingClientRect();
+            const threshold = window.innerHeight - 150; // 设置一个触发滚动的阈值线
+
+            // 如果展开后的底部（或中心）超过了阈值
+            if (rect.bottom > threshold) {
+                // 计算差值，平滑滚动
+                const offset = rect.bottom - threshold + 100; // 多滚 100px 留出呼吸感
+                wrapper.scrollBy({
+                    top: offset,
+                    behavior: 'smooth'
+                });
+            }
+        }, 300); // 300ms 配合你的 CSS transition 时间
+    });
+});
+
+let hoverTimer;
+
+// 使用事件委托：将监听器挂在 body 上，监听所有鼠标滑动
+document.body.addEventListener('mouseover', (e) => {
+    // 寻找鼠标当前所处位置最近的 .specimen-folder
+    const folder = e.target.closest('.specimen-folder');
+    if (!folder) return; // 如果没碰到文件夹，直接退出
+
+    clearTimeout(hoverTimer);
+
+    hoverTimer = setTimeout(() => {
+        // 1. 关掉其他所有已展开的文件夹
+        document.querySelectorAll('.specimen-folder.is-open').forEach(f => {
+            if (f !== folder) f.classList.remove('is-open');
+        });
+
+        // 2. 展开当前文件夹
+        folder.classList.add('is-open');
+
+        // 3. 对焦滚动
+        const wrapper = document.querySelector('.specimen-list-wrapper');
+        if (wrapper) {
+            const rect = folder.getBoundingClientRect();
+            if (rect.bottom > window.innerHeight - 100) {
+                wrapper.scrollBy({ top: rect.height / 2, behavior: 'smooth' });
+            }
+        }
+    }, 150);
+});
+
+// 处理鼠标离开防抖
+document.body.addEventListener('mouseout', (e) => {
+    const folder = e.target.closest('.specimen-folder');
+    if (!folder) return;
+
+    // 核心逻辑：防止鼠标在文件夹内部移动时误触发离开事件
+    if (folder.contains(e.relatedTarget)) return;
+
+    clearTimeout(hoverTimer);
+});

@@ -32,7 +32,16 @@ body {
         cursor: none;
 
 }
-
+body::after {
+    content: "";
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: url('https://grainy-gradients.vercel.app/noise.svg');
+    opacity: 0.04; /* 极低透明度，若有若无 */
+    pointer-events: none;
+    z-index: 10000;
+}
 #custom-cursor {
     width: 15px; height: 15px;
     border: 1px solid rgba(212, 203, 179, 0.4); /* 改用暖色系，与整体统一 */
@@ -210,16 +219,275 @@ h1 {
         height: calc(100vh - 160px);
         perspective: 1000px; /* 为 3D 退后效果做准备 */
 }
+.specimen-list {
+    display: flex;
+        flex-direction: column;
+        padding-top: 50px;
+        gap: 0px; /* 彻底取消间距，靠 margin 产生重叠 */
+        transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform;
+        padding-bottom: 20vh;
+}
+.specimen-folder {
+    position: relative;
+    width: 100%;
+    height: 60px; /* 初始高度：只露出页签 */
+    background: linear-gradient(135deg, #181815 0%, #121210 100%);
+        border-left: 3px solid #2a2825; /* 模拟文件夹的侧脊 */
+        margin-bottom: -5px; /* 产生重叠感 */
+    border-top: 1px solid rgba(140, 126, 101, 0.15);
+    overflow: hidden;
+    transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    cursor: pointer;
+    transform-origin: top;
+}
+
+/* 堆叠伪类：让每一个文件夹稍微压在下一个上面 */
+.specimen-folder:not(:last-child) {
+    margin-bottom: -10px;
+}
+/* --- HOVER 展开态 --- */
+.specimen-folder.is-open {
+    height: 520px !important; /* 展开后的物理空间 */
+    background: #1a1a17 !important;
+    border-top: 1px solid rgba(140, 126, 101, 0.4);
+    z-index: 10; /* 确保展开时压在别人上面 */
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    margin-bottom: 10px; /* 推开下方的文件夹，产生物理挤压效果 */
+    border-left: 3px solid #8c7e65;
+}
+/* 内部内容排版 */
+.folder-header {
+    display: flex;
+        align-items: center;
+        justify-content: space-between; /* 撑开 ID 和状态 */
+        padding: 0 30px;
+        height: 60px;
+        position: relative;
+}
+.folder-body {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.5s ease 0.1s; /* 延迟显示，等待文件夹拉开高度 */
+    padding: 20px 40px 40px 40px;
+}
+
+.folder-id-group {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.status-indicator {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #8c7e65;
+    box-shadow: 0 0 8px rgba(140, 126, 101, 0.6);
+    animation: pulse 2s infinite;
+}
+
+/* 右侧：模拟档案刻度 */
+.folder-header::after {
+    content: '|||| || | |||||';
+    font-family: Arial;
+    font-size: 8px;
+    letter-spacing: 2px;
+    color: rgba(140, 126, 101, 0.15);
+    margin-right: 10px;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.4; }
+    50% { opacity: 1; }
+    100% { opacity: 0.4; }
+}
+
+.specimen-folder.is-expanded .mini-preview {
+    animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(30px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.specimen-folder.is-open .folder-body {
+    opacity: 1;
+    transform: translateY(0);
+}
+.body-content {
+    display: grid;
+        grid-template-columns: 330px 1fr; /* 左侧图片稍微加大，压住阵脚 */
+        gap: 50px;
+
+        align-items: start; /* 关键：所有内容从顶部开始排 */
+        padding-top: 0;
+}
+.preview-container {
+    position: relative;
+    overflow: hidden;
+}
+
+.scan-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(to bottom,
+        transparent 0%,
+        rgba(140, 126, 101, 0.05) 50%,
+        transparent 100%);
+    background-size: 100% 4px; /* 模拟老式显示器的扫描线 */
+    pointer-events: none;
+}
+.meta-header {
+    font-size: 10px;
+    color: #4a453a;
+    border-bottom: 1px solid rgba(140, 126, 101, 0.2);
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+    letter-spacing: 0.3em;
+}
+
+.meta-footer {
+    margin-top: auto; /* 推到底部 */
+    font-size: 10px;
+    color: #2a2825;
+    font-family: monospace;
+}
+.mini-preview {
+    width: 100%;
+        /* 核心修复：锁定黄金比例，不要让它随文字高度变化 */
+        aspect-ratio: 4 / 5;
+        height: auto;
+
+        background-size: cover;
+        background-position: center;
+        border: 1px solid rgba(140, 126, 101, 0.2);
+        filter: grayscale(1) contrast(1.2) brightness(0.8);
+            mix-blend-mode: screen; /* 与深色背景融合 */
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        display: block !important; /* 强制显示 */
+}
+.specimen-folder.is-open .mini-preview {
+    filter: grayscale(0.5) contrast(1.1) brightness(1); /* 展开时稍微恢复色彩 */
+}
+.mini-metadata {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 12px;
+        padding-top: 5px;
+}
+.meta-row {
+    display: flex;
+        justify-content: flex-start;
+        border-bottom: 1px solid rgba(140, 126, 101, 0.1);
+        padding: 8px 0;
+}
+.meta-row label {
+    width: 100px; /* 固定标签宽度，形成整齐的垂直线 */
+    font-weight: 800;
+    color: #5a5448; /* 比之前稍亮，增强可读性 */
+}
+.meta-row label { color: #4a453a; margin-right: 15px; }
+.meta-row span { color: #888; }
 
 .specimen-list-wrapper {
     width: 100%;
-        height: 100%;
-        transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1),
-                    filter 1.2s ease,
-                    opacity 1.2s ease;
-        z-index: 1;
+    height: 100%;
+    transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1),
+                filter 1.2s ease,
+                opacity 1.2s ease;
+    overflow-y: auto; /* 开启内部滚动 */
+    overflow-x: hidden;
+    scrollbar-width: none; /* 隐藏火狐滚动条 */
+    scroll-behavior: smooth;
+    z-index: 1;
+    -webkit-mask-image: linear-gradient(
+            to bottom,
+            transparent 0%,
+            black 10%,
+            black 90%,
+            transparent 100%
+        );
+}
+.split-container.active .specimen-folder {
+    height: 65px !important; /* 稍微调高，给预览图留出缝隙 */
+    opacity: 0.4;
+    background: transparent!important;
+    border-left: 2px solid #2a2825 !important;
+    margin-bottom: 0 !important;
+        margin-top: 0 !important;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    display: block !important;
+    border-top: none !important;
+    border-bottom: 1px solid rgba(140, 126, 101, 0.05) !important; /* 改用极淡的底部分割线 */
+}
+.split-container.active .specimen-folder:not(:last-child) {
+    margin-bottom: 0 !important;
+}
+/* 2. 自然的高亮反馈：Hover 状态 */
+.split-container.active .specimen-folder.is-open {
+
+    opacity: 0.85;
+
+    background: #1a1a17 !important;
+    border-left: 2px solid #d4cbb3 !important; /* 左侧脊梁亮起 */
+    padding-left: 5px;
+}
+.split-container.active .folder-header::after,
+.split-container.active .status-indicator,
+.split-container.active .folder-tag,
+.split-container.active .folder-index {
+    display: none !important;
 }
 
+.split-container.active .folder-body {
+    display: flex !important; /* 强行显示，但通过控制内部元素来精简 */
+    opacity: 0.3;
+    padding: 10px 0 0 30px !important;
+    pointer-events: none;
+}
+.split-container.active .preview-container {
+    width: 40px; /* 极小的预览方块 */
+    height: 30px;
+    overflow: hidden;
+}
+/* 3. 文字联动态：Hover 时 ID 变亮 */
+.split-container.active .specimen-folder.is-open .folder-id {
+    color: #8c7e65;
+    text-shadow: 0 0 8px rgba(212, 203, 179, 0.3); /* 极轻微的荧光感 */
+}
+.split-container.active .specimen-folder.is-open .folder-body {
+    display: grid !important;
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+		pointer-events: auto !important;
+}
+/* 恢复预览图尺寸，防止被挤成 40px */
+.split-container.active .specimen-folder.is-open .preview-container {
+    width: 100% !important;
+    height: auto !important;
+}
+.split-container.active .specimen-folder.is-active {
+    opacity: 1;
+    background: rgba(140, 126, 101, 0.1) !important;
+    border-left: 2px solid #8c7e65 !important;
+    border-top: 1px solid rgba(140, 126, 101, 0.1) !important;
+}
+.split-container.active .is-active .folder-id {
+    color: #d4cbb3;
+}
+.split-container.active .folder-id {
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: #6b6455;
+    transition: color 0.4s ease;
+}
+.split-container.active .specimen-folder.is-active .folder-id {
+    color: #d4cbb3;
+    font-weight: bold;
+    text-shadow: 0 0 5px rgba(212, 203, 179, 0.2);
+}
 /* --- 3. 右侧详情面板 (取代 Overlay) --- */
 #inspection-panel {
     position: absolute;
@@ -229,7 +497,7 @@ h1 {
         height: 100%;
         background: transparent; /* 容器透明，靠内部元素着色 */
         z-index: 100;
-
+				pointer-events: none;
         opacity: 0;
         visibility: hidden;
         transform: translateX(30px); /* 初始位移 */
@@ -238,10 +506,14 @@ h1 {
 
 /* --- 4. 激活分屏状态 --- */
 .split-container.active .specimen-list-wrapper {
+background-image:
+        linear-gradient(rgba(140, 126, 101, 0.02) 1px, transparent 1px);
+    background-size: 100% 10px;
     transform: scale(0.95) translateZ(-50px);
-        filter: blur(8px) brightness(0.3) grayscale(1);
-        opacity: 0.4;
-        pointer-events: none; /* 防止点击底部的列表 */
+		pointer-events: auto !important;
+    opacity: 0.4;
+    z-index: 10;
+         /* 防止点击底部的列表 */
 }
 .split-container.active #inspection-panel {
     opacity: 1;
@@ -274,17 +546,16 @@ h1 {
     padding: 60px;
     display: flex;
     flex-direction: column;
+    pointer-events: auto;
+    box-shadow: -50px 0 100px rgba(0, 0, 0, 0.9); /* 强化层级深感 */
 }
 
 .inspection-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    margin-bottom: 30px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid rgba(140, 126, 101, 0.1);
-    position: relative;
-    z-index: 1000;
+    display: block;
+        height: 0; /* 彻底放弃它的物理占位 */
+        margin: 0;
+        padding: 0;
+        border-bottom: none !important; /* 物理抹杀那根幽灵线 */
 }
 
 .inspection-header h2 {
@@ -296,28 +567,35 @@ h1 {
 }
 
 .inspection-close {
-    font-size: 9px;
-    color: #4a453a;
-    cursor: pointer !important;
-    letter-spacing: 0.4em;
-    padding: 20px; /* 增加点击热区 */
-    margin: -20px;
-    transition: color 0.3s ease;
-    z-index: 9999 !important; /* 确保不被图片遮挡 */
-    position: relative;
-    pointer-events: auto !important;
-    user-select: none;
+    position: absolute; /* 拔出文档流，悬浮在最上层 */
+        top: 20px;
+        right: 30px;
+        font-size: 9px;
+        color: #8c7e65;
+        cursor: pointer !important;
+        letter-spacing: 0.4em;
+        padding: 1px 1px;
+        background: transparent; /* 加暗色底，防止字和图片亮部融为一体 */
+        border: none !important;
+        transition: all 0.3s ease;
+        z-index: 9999 !important;
+        padding: 15px 25px; /* 增加物理点击区域 */
+            margin: -10px -25px; /* 利用负边距抵消掉 padding 占据的视觉空间 */
 }
 
-.inspection-close:hover { color: #d4cbb3;  }
+.inspection-close:hover {
+		color: #d4cbb3;
+    background: transparent;
+   }
 
 .inspection-body {
     display: grid;
-        grid-template-columns: 1fr 350px; /* 大图占左边，文字缩在右边一小条 */
-        gap: 80px;
+        margin-top: 0; /* 🚨 删掉之前的 -50px！停止穿模！ */
+        grid-template-columns: 1.2fr 1fr;
+        gap: 60px;
         height: 100%;
         align-items: start;
-        padding-top: 20px;
+        padding-top: 20px; /* 给顶部留出合理的呼吸空间 */
 }
 
 
@@ -328,46 +606,16 @@ h1 {
 }
 
 .report-notes-box {
-    margin-top: 20px;
-    padding-top: 20px;
-    border-top: 1px dashed rgba(140, 126, 101, 0.2);
-    color: #888;
-    font-size: 11px;
-    line-height: 2;
+    margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px dashed rgba(140, 126, 101, 0.2);
+        color: #a09d94;
+        font-size: 13px; /* 同步提亮放大 */
+        line-height: 2;
 }
 
-/* --- 6. 列表项在压缩后的适配 --- */
-.split-container.active .specimen-item {
-    padding: 25px 20px 25px 120px; /* 减小间距防止溢出 */
-}
-
-.split-container.active .specimen-item .status {
-    opacity: 0; /* 压缩时隐藏状态，保住核心名字 */
-    pointer-events: none;
-}
-
-.split-container.active .specimen-item .id {
-    left: 70px; /* 调整编号位置 */
-}
 .archive-header { width: 100%; display: flex; justify-content: space-between; font-size: 9px; color: #4a453a; letter-spacing: 0.5em; border-bottom: 1px solid #1d1d1a; padding-bottom: 15px; margin-bottom: 50px; }
-.specimen-list {
-    min-height: 100%;
-    width: 100%;
-}
 
-.specimen-item {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start; /* 基础还是左对齐 */
-    width: 100%; /* 锁定宽度 */
-    padding: 35px 40px 35px 160px; /* 重点：右侧也加上 60px 的 padding，防止文字撞墙 */
-    border-bottom: 1px solid rgba(45, 42, 35, 0.15);
-    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-    box-sizing: border-box;
-    overflow: hidden;
-}
-/* 垂直索引标签核心样式 */
 .specimen-tag {
     position: absolute;
     left: 20px;
@@ -390,110 +638,7 @@ h1 {
     padding-left: 8px;
     transition: all 0.4s ease;
 }
-.specimen-item:hover {
-    background: rgba(212, 203, 179, 0.03); /* 极弱的暖光，像手电筒照过去 */
 
-    /* 核心修正：从 10px 降到 4px，甚至可以设为 0 */
-    /* 我们追求的是“若有若无”的动感 */
-    transform: translateX(4px);
-
-    /* 增加一个极其微弱的左侧发光边框，模拟档案袋边缘被照亮 */
-    box-shadow: inset 2px 0 0 0 rgba(140, 126, 101, 0.4);
-}
-.specimen-item:hover .name {
-    color: #dcdcdc;
-    /* 关键 3: 间距变化幅度不要太大，0.28em 是极限 */
-    letter-spacing: 0.04em;
-
-    /* 关键 4: 物理缩放回归 1，利用 transform 的平滑性掩盖字间距的跳动 */
-    transform: scale(1);
-    filter: brightness(1.1);
-
-    /* 关键 5: 视觉欺骗——在动画过程中加入极微量的模糊 */
-    /* 这会让跳动的边缘变柔和，看起来像是在“对焦” */
-    filter: blur(0.2px);
-    transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-}
-/* 悬停时的视觉唤醒 */
-/* 5. 悬停反馈 */
-.specimen-item:hover .specimen-tag {
-    color: #8c7e65;
-    border-left: 1px solid rgba(140, 126, 101, 0.8);
-    /* 字间距不要加太多，防止上下顶到别的行 */
-    letter-spacing: 0.5em;
-}
-.specimen-item .id {
-    position: absolute;
-    left: 100px; /* 这个位置是安全的 */
-    width: 60px;
-    color: #3d3a33;
-    font-size: 10px;
-    margin: 0;
-    transition: color 0.4s;
-    /* 强制它不随父级的 flex 挤压 */
-    flex-shrink: 0;
-}
-/* 2. 名称：给它一个弹性的、但有上限的宽度 */
-.specimen-item .name {
-		display: inline-block;
-    flex-grow: 1;
-    text-align: left;
-    color: #a09d94;
-
-    /* 关键 1: 增加过渡时间，并确保包含 filter */
-    transition:
-        color 0.6s ease,
-        letter-spacing 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-        filter 0.6s ease,
-        transform 0.8s ease;
-
-    /* 关键 2: 告诉浏览器我们要动这些属性，提前优化 */
-    will-change: letter-spacing, filter, transform;
-
-    /* 初始状态稍微收缩一点点 */
-    transform-origin: left center;
-    transform: scale(0.995);
-}
-
-/* 3. 状态栏：彻底推向最右侧 */
-.specimen-item .status {
-    width: auto; /* 放弃之前的 30% 固定宽度 */
-    text-align: right;
-    font-size: 8px; /* 稍微缩小一号，制造层级感 */
-    color: #4a453a; /* 默认设为深色，像一种次要的元数据 */
-    letter-spacing: 0.3em;
-    flex-shrink: 0;
-    margin-left: 40px; /* 确保即使名字很长，也会留出至少 40px 间距 */
-    transition: all 0.4s ease;
-    white-space: nowrap;
-}
-
-.specimen-item:hover .id {
-    color: #666; /* 编号稍微提亮一点点 */
-}
-
-.specimen-item:hover .status {
-    color: #8c7e65; /* 变成黄铜色 */
-    letter-spacing: 0.1em; /* 状态栏字母多，可以稍微比名字多一点点，但也要收敛 */
-    transition: all 0.4s ease
-}
-/* --- 激活状态的列表项视觉反馈 --- */
-.specimen-item.is-active {
-    background: rgba(140, 126, 101, 0.08); /* 背景微亮，表明正在被查看 */
-    box-shadow: inset 3px 0 0 0 #8c7e65; /* 左侧亮起标识线 */
-}
-
-.specimen-item.is-active .name {
-    color: #fff;
-    letter-spacing: 0.1em;
-}
-
-/* 即使在悬停时，也保持激活的颜色，并提示用户点击可收回 */
-.specimen-item.is-active:hover {
-    cursor: w-resize; /* 光标变成向左收回的箭头 */
-    background: rgba(140, 126, 101, 0.12);
-}
-/* 预览图随鼠标移动 */
 #image-preview {
 		position: fixed; pointer-events: none; width: 320px; height: 420px;
 		background: #000; border: 1px solid #2d2a23; display: none;
@@ -506,15 +651,28 @@ h1 {
 #protocol-status, #geo-coords { position: absolute; font-size: 8px; color: #3d3a33; letter-spacing: 0.4em; text-transform: uppercase; z-index: 1; }
 #protocol-status { top: 45px; left: 45px; }
 #geo-coords { bottom: 45px; right: 45px; }
+/* 分屏打开的图片*/
 .report-main-img {
-    width: 100%;
-        height: 70vh;
-        /* 核心改动：增加一个内阴影，让图片看起来像是陷在面板里的 */
-        box-shadow: inset 0 0 50px rgba(0,0,0,0.8);
-        border: 1px solid rgba(140, 126, 101, 0.1);
-        position: relative;
+position: relative;
+   background-color: #0d0d0b;
+   border: 1px solid rgba(140, 126, 101, 0.1);
+   box-shadow: 0 0 40px rgba(0, 0, 0, 0.5),
+               inset 0 0 20px rgba(140, 126, 101, 0.05);
+   /* 增加一个裁切感 */
+   clip-path: inset(0 0 0 0);
+   transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+   padding: 15px;
 }
-
+.report-main-img::before {
+    content: "SAMPLE_VISUAL_REF_01";
+    position: absolute;
+    top: -10px;
+    left: 10px;
+    font-size: 8px;
+    background: #121210;
+    padding: 0 5px;
+    color: #4a453a;
+}
 /* 图片适配分屏高度 */
 .inspection-body .report-main-img {
     width: 100%;
@@ -533,6 +691,8 @@ h1 {
 
         /* 鼠标放上去时，变成十字准星，暗示可以进行“精度扫描” */
         cursor: crosshair;
+        outline: 1px solid rgba(140, 126, 101, 0.05);
+            outline-offset: 10px; /* 在图片外围一圈若有若无的细线 */
 }
 
 .inspection-body .report-main-img.zoom-active {
@@ -585,22 +745,33 @@ h1 {
 }
 
 .report-field {
-    margin-bottom: 40px;
+    position: relative;
+        padding-left: 20px;
+        margin-bottom: 35px;
 }
 
 .report-field label {
     display: block;
-    font-size: 7px;
+    font-size: 9px;
     font-weight: 800;
-    color: #4a453a;
-    margin-bottom: 10px;
-    letter-spacing: 0.3em;
+    color: #2a2825;
+    margin-bottom: 8px;
+    letter-spacing: 0.5em;
+    border-left: 1px solid #4a453a;
+    text-transform: uppercase;
+    padding-left: 10px;
 }
 
 .report-field span {
-    font-size: 10px;
-    color: #888;
-    line-height: 1.6;
+display: block;
+    font-size: 12px; /* 🚨 13px 是这种字体的阅读下限 */
+    font-family: "Source Han Serif CN", serif;
+        color: #a09d94;  /* 提亮正文颜色 */
+        line-height: 1.8;
+        letter-spacing: 0.05em;
+        text-align: justify;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+        margin-top: 5px;
 }
 
 
@@ -629,7 +800,9 @@ h2#rpt-id {
     margin: 0 0 20px 0;
     letter-spacing: 0.2em;
 }
-
+#rpt-id {
+    display: none; /* 彻底移除 SELECT_SPECIMEN 的显示 */
+}
 #dust-layer {
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
@@ -865,4 +1038,20 @@ h2#rpt-id {
 /* 档案层开启时，菜单项的颜色可以微调以适配列表背景 */
 #nav-system.in-archive .menu-item {
     color: #8c7e65;
+}
+
+
+.split-container.active:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 15%; /* 就在分屏分界线上 */
+    width: 1px;
+    height: 100%;
+    background: linear-gradient(to bottom,
+        transparent,
+        rgba(140, 126, 101, 0.4),
+        transparent);
+    z-index: 5;
+    pointer-events: none;
 }
