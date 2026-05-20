@@ -1231,11 +1231,12 @@ h2#rpt-id {
         overflow-y: auto;
     }
     #card-close {
-        top: 20px;
+        top: auto;
+        bottom: 28px;
         right: 24px;
     }
-    #card-prev { left: 16px; }
-    #card-next { right: 16px; }
+    #card-prev { left: 16px; top: 21vh; }
+    #card-next { right: 16px; top: 21vh; }
 
     .card-row label {
         min-width: 72px;
