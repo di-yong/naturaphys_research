@@ -2,16 +2,12 @@ let currentActiveId = null;
 const elements = {
     brand: document.getElementById('brand-name'),
     manifesto: document.getElementById("manifesto-text"),
-    trigger: document.getElementById('access-trigger'),
-    overlay: document.getElementById('auth-overlay'),
     keyInput: document.getElementById('key-input'),
     archive: document.getElementById('archive-layer'),
     void: document.getElementById('void-container'),
     cursor: document.getElementById('custom-cursor'),
-    preview: document.getElementById('image-preview'),
     clock: document.getElementById('live-clock'),
     list: document.querySelector('.specimen-list'),
-    reportOverlay: document.getElementById('report-overlay'),
     get clickSound() { return document.getElementById('click-sound'); }
 };
 
@@ -24,7 +20,29 @@ const playClick = () => {
 };
 
 //const text = "WE DO NOT PRODUCE FASHION; WE DOCUMENT MATERIAL EVOLUTION.\nTHE FIBER IS THE WITNESS. THE SOIL IS THE ARCHIVE.";
-let index = 0;
+
+// 打字机效果（逐字显示 manifesto 文本）
+const MANIFESTO_TEXT = "WE DO NOT PRODUCE FASHION. WE DOCUMENT MATERIAL EVOLUTION.\nTHE FIBER IS THE WITNESS. THE SOIL IS THE ARCHIVE.";
+let typeIndex = 0;
+
+function typeWriter() {
+    if (!elements.manifesto) return;
+    if (typeIndex < MANIFESTO_TEXT.length) {
+        const char = MANIFESTO_TEXT[typeIndex];
+        if (char === '\n') {
+            elements.manifesto.innerHTML += '<br>';
+        } else {
+            const span = document.createElement('span');
+            span.textContent = char;
+            span.style.opacity = '0';
+            span.style.transition = 'opacity 0.8s ease';
+            elements.manifesto.appendChild(span);
+            requestAnimationFrame(() => span.style.opacity = '1');
+        }
+        typeIndex++;
+        setTimeout(typeWriter, 60);
+    }
+}
 
 // 1. 自动生成列表
 function renderArchive() {
@@ -55,27 +73,15 @@ function renderArchive() {
                        <div class="mini-metadata">
                            <div class="meta-header">PROPERTY_DECRYPTION</div>
                            <div class="meta-row"><label>MATERIAL</label> <span>${item.report.material}</span></div>
-                           <div class="meta-row"><label>STRESS_LVL</label> <span>${(Math.random()*20 + 80).toFixed(1)}%</span></div>
+                           <div class="meta-row"><label>STRESS_LVL</label> <span>${(80 + (parseInt(item.id.replace('SP_','')) * 7) % 20).toFixed(1)}%</span></div>
                            <div class="meta-row"><label>LATITUDE</label> <span>31.233°N</span></div>
                            <div class="meta-footer">CRC_CHECKSUM: OK // AUTH_LEVEL_4</div>
                        </div>
                    </div>
                </div>
-           </div>
-       `).join('');
-
-       const folders = elements.list.querySelectorAll('.specimen-folder');
-           folders.forEach(folder => {
-               folder.addEventListener('mouseenter', () => {
-                   const img = folder.querySelector('.mini-preview');
-                   if (img && img.dataset.src) {
-                       img.style.backgroundImage = `url('${img.dataset.src}')`;
-                       img.style.opacity = "1"; // 确保可见
-                       delete img.dataset.src;
-                   }
-               });
-           });
+           </div>       `).join('');
 }
+
 
 
 // 3. 初始加载逻辑
@@ -97,29 +103,7 @@ document.addEventListener('mousemove', e => {
     }
 });
 
-// 5. 授权逻辑
-if (elements.trigger) {
-    elements.trigger.onclick = () => {
-        playClick();
-
-        // 隐藏触发器
-        elements.trigger.style.opacity = "0";
-        elements.trigger.style.pointerEvents = "none";
-
-        const terminal = document.getElementById('sync-terminal');
-        if (terminal) {
-            terminal.style.display = 'flex'; // 开启 Flex 力场
-
-            setTimeout(() => {
-                // 唯一的动画就是淡入。不准有 transform！
-                terminal.style.transition = "opacity 1.5s ease";
-                terminal.style.opacity = "1";
-
-                if (elements.keyInput) elements.keyInput;
-            }, 50);
-        }
-    };
-}
+// 5. 授权逻辑（access-trigger 已注释，这段保留以防未来重启）
 
 if (elements.keyInput) {
     elements.keyInput.addEventListener('input', (e) => {
@@ -130,12 +114,10 @@ if (elements.keyInput) {
 
 const validateAccess = () => {
     if (elements.keyInput.value === "123") {
-        if (elements.overlay) elements.overlay.style.opacity = '0';
-        if (elements.void) {
+        if (elements.overlay) elements.overlay.style.opacity = '0';        if (elements.void) {
             elements.void.style.transform = "translate(-50%, -150%) blur(20px)";
             elements.void.style.opacity = "0";
         }
-        if (elements.trigger) elements.trigger.style.opacity = "0";
 
 				const navSystem = document.getElementById('nav-system');
 				const collectionBtn = document.getElementById('btn-collections');
@@ -252,15 +234,11 @@ window.openReport = (id) => {
 window.closeInspection = function() {
     console.log("System: Executing Collapse and Resetting List...");
     const container = document.querySelector('.split-container');
-		const wrapper = document.querySelector('.specimen-list-wrapper');
-
-    if (container && container.classList.contains('active')) {
+		const wrapper = document.querySelector('.specimen-list-wrapper');    if (container && container.classList.contains('active')) {
         // 1. 核心修复：移除所有干扰样式的类名
         container.classList.remove('active');
         container.classList.remove('is-collapsed-mode');
-				const wrapper = document.querySelector('.specimen-list-wrapper');
 
-        const listWrapper = document.querySelector('.specimen-list-wrapper');
         if (wrapper) {
 	          wrapper.style.transform = "";
 	          wrapper.style.opacity = "";
@@ -420,15 +398,12 @@ const returnToVoid = () => {
             // 主页完全就位后，导航栏才亮起
             if (navSystem) navSystem.style.opacity = "1";
         }, 500);
+    }    // 3. 重新显示 Request Access 触发器（如果需要）
+    const accessTrigger = document.getElementById('access-trigger');
+    if (accessTrigger) {
+        accessTrigger.style.opacity = "1";
+        accessTrigger.style.pointerEvents = "auto";
     }
-
-    // 3. 重新显示 Request Access 触发器（如果需要）
-    if (elements.trigger) {
-        elements.trigger.style.opacity = "1";
-        elements.trigger.style.pointerEvents = "auto";
-    }
-
-
 };
 
 // 提取原本的 Collection 点击逻辑，方便重复调用
@@ -440,7 +415,6 @@ const originalCollectionLogic = () => {
         terminal.style.display = 'flex';
         setTimeout(() => {
             terminal.style.opacity = "1";
-           // document.getElementById('key-input').focus();
         }, 50);
     }
 };
@@ -449,30 +423,20 @@ const originalCollectionLogic = () => {
 const mainImg = document.querySelector('.report-main-img');
 
 if (mainImg) {
-    // 鼠标移动时：计算相对坐标，移动背景
     mainImg.addEventListener('mousemove', function(e) {
-        // 如果没有放大，不执行
         if (!this.classList.contains('zoom-active')) return;
-
         const rect = this.getBoundingClientRect();
-        // 计算鼠标在图片内的百分比位置
         const x = ((e.clientX - rect.left) / rect.width) * 100;
         const y = ((e.clientY - rect.top) / rect.height) * 100;
-
-        // 实时改变背景的聚焦点
         this.style.backgroundPosition = `${x}% ${y}%`;
     });
 
-    // 鼠标进入时：激活放大模式
     mainImg.addEventListener('mouseenter', function() {
         this.classList.add('zoom-active');
-        // 可选：如果你之前屏蔽了自定义光标，可以在这里让十字准星更明显
     });
 
-    // 鼠标离开时：恢复原状和居中
     mainImg.addEventListener('mouseleave', function() {
         this.classList.remove('zoom-active');
-        // 延迟恢复居中，配合 CSS 的 transition 会有极强的镜头回缩感
         setTimeout(() => {
             if (!this.classList.contains('zoom-active')) {
                 this.style.backgroundPosition = 'center';
@@ -481,135 +445,68 @@ if (mainImg) {
     });
 }
 
+// 统一的文件夹点击代理（分屏激活状态下切换 specimen）
 document.addEventListener('click', (e) => {
     const folder = e.target.closest('.specimen-folder');
     if (!folder) return;
-
     const container = document.querySelector('.split-container');
-
-    // 只有当分屏已经打开（15%模式）时，我们才接管点击逻辑
-    if (container.classList.contains('active')) {
+    if (container && container.classList.contains('active')) {
         const id = folder.querySelector('.folder-id').innerText;
-
-        // 如果点的是新 ID，才切换；点的是当前 ID，不做任何事（防止闪烁关闭）
         if (currentActiveId !== id) {
             window.openReport(id);
         }
-
         e.preventDefault();
-        e.stopPropagation(); // 阻止触发 HTML 原生的 onclick，防止二次执行
+        e.stopPropagation();
     }
 });
-// 在 specimen-folder 的事件监听中
-const folders = document.querySelectorAll('.specimen-folder');
 
-folders.forEach(folder => {
-    folder.addEventListener('mouseenter', () => {
-        const img = folder.querySelector('.mini-preview.lazy-load');
-        if (img && img.dataset.src) {
-            // 执行加载
-            img.style.backgroundImage = `url('${img.dataset.src}')`;
-            img.classList.remove('lazy-load');
-            delete img.dataset.src;
-
-            // 顾问建议：加一个淡入动画
-            img.style.animation = "dataReveal 0.8s ease forwards";
-        }
-    });
-});
-document.querySelectorAll('.specimen-folder').forEach(folder => {
-    folder.addEventListener('mouseenter', (e) => {
-        const folderElement = e.currentTarget;
-        const wrapper = document.querySelector('.specimen-list-wrapper');
-
-        // 给 CSS 展开预留一点点解析时间
-        setTimeout(() => {
-            const rect = folderElement.getBoundingClientRect();
-            const viewHeight = window.innerHeight;
-            const expandHeight = 520;
-
-            // 判断底部是否溢出
-            if (rect.top + expandHeight > viewHeight) {
-                // 计算需要滚动的增量：让文件夹的顶部滚动到屏幕上方 10% 的位置，确保全显
-                const scrollAmount = wrapper.scrollTop + (rect.top - 100);
-
-                wrapper.scrollTo({
-                    top: scrollAmount,
-                    behavior: 'smooth'
-                });
-            }
-        }, 100); // 100ms 延迟，等 CSS 高度展开动画开始
-    });
-});
-
-// 当鼠标离开整个列表区域时，重置滚动位置（可选，看你审美）
-document.querySelector('.specimen-list').addEventListener('mouseleave', () => {
-    document.querySelector('.specimen-list-wrapper').scrollTo({
-        top: 0,
-        behavior: 'smooth'
-    });
-});
-
-document.querySelectorAll('.specimen-folder').forEach(folder => {
-    folder.addEventListener('mouseenter', (e) => {
-        const folderEl = e.currentTarget;
-        const wrapper = document.querySelector('.specimen-list-wrapper');
-
-        // 稍微延迟，等待 CSS 的 520px 展开动画开始
-        setTimeout(() => {
-            const rect = folderEl.getBoundingClientRect();
-            const threshold = window.innerHeight - 150; // 设置一个触发滚动的阈值线
-
-            // 如果展开后的底部（或中心）超过了阈值
-            if (rect.bottom > threshold) {
-                // 计算差值，平滑滚动
-                const offset = rect.bottom - threshold + 100; // 多滚 100px 留出呼吸感
-                wrapper.scrollBy({
-                    top: offset,
-                    behavior: 'smooth'
-                });
-            }
-        }, 300); // 300ms 配合你的 CSS transition 时间
-    });
-});
-
+// 统一的 mouseover 事件委托：懒加载图片 + 展开文件夹 + 滚动对焦（三合一，不再重复绑定）
 let hoverTimer;
 
-// 使用事件委托：将监听器挂在 body 上，监听所有鼠标滑动
 document.body.addEventListener('mouseover', (e) => {
-    // 寻找鼠标当前所处位置最近的 .specimen-folder
     const folder = e.target.closest('.specimen-folder');
-    if (!folder) return; // 如果没碰到文件夹，直接退出
+    if (!folder) return;
+
+    // 懒加载图片
+    const img = folder.querySelector('.mini-preview');
+    if (img && img.dataset.src) {
+        img.style.backgroundImage = `url('${img.dataset.src}')`;
+        delete img.dataset.src;
+    }
 
     clearTimeout(hoverTimer);
-
     hoverTimer = setTimeout(() => {
-        // 1. 关掉其他所有已展开的文件夹
+        // 关闭其他已展开的文件夹
         document.querySelectorAll('.specimen-folder.is-open').forEach(f => {
             if (f !== folder) f.classList.remove('is-open');
         });
 
-        // 2. 展开当前文件夹
+        // 展开当前文件夹
         folder.classList.add('is-open');
 
-        // 3. 对焦滚动
+        // 滚动对焦：超出视口则自动滚动
         const wrapper = document.querySelector('.specimen-list-wrapper');
         if (wrapper) {
             const rect = folder.getBoundingClientRect();
-            if (rect.bottom > window.innerHeight - 100) {
-                wrapper.scrollBy({ top: rect.height / 2, behavior: 'smooth' });
+            const threshold = window.innerHeight - 150;
+            if (rect.bottom > threshold) {
+                wrapper.scrollBy({ top: rect.bottom - threshold + 100, behavior: 'smooth' });
             }
         }
     }, 150);
 });
 
-// 处理鼠标离开防抖
 document.body.addEventListener('mouseout', (e) => {
     const folder = e.target.closest('.specimen-folder');
     if (!folder) return;
-
-    // 核心逻辑：防止鼠标在文件夹内部移动时误触发离开事件
     if (folder.contains(e.relatedTarget)) return;
-
     clearTimeout(hoverTimer);
+});
+
+// 鼠标离开整个列表区域时，重置滚动位置
+document.querySelector('.specimen-list').addEventListener('mouseleave', () => {
+    document.querySelector('.specimen-list-wrapper').scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
 });
