@@ -1,9 +1,7 @@
 ﻿let currentActiveId = null;
 const elements = {
     brand: document.getElementById('brand-name'),
-    manifesto: document.getElementById("manifesto-text"),
     archive: document.getElementById('archive-layer'),
-    void: document.getElementById('void-container'),
     cursor: document.getElementById('custom-cursor'),
     clock: document.getElementById('live-clock'),
     list: document.querySelector('.specimen-list'),
@@ -17,31 +15,6 @@ const playClick = () => {
     elements.clickSound.playbackRate = 0.85;
     elements.clickSound.play().catch(() => {});
 };
-
-//const text = "WE DO NOT PRODUCE FASHION; WE DOCUMENT MATERIAL EVOLUTION.\nTHE FIBER IS THE WITNESS. THE SOIL IS THE ARCHIVE.";
-
-// 打字机效果（逐字显示 manifesto 文本）
-const MANIFESTO_TEXT = "WE DO NOT PRODUCE FASHION. WE DOCUMENT MATERIAL EVOLUTION.\nTHE FIBER IS THE WITNESS. THE SOIL IS THE ARCHIVE.";
-let typeIndex = 0;
-
-function typeWriter() {
-    if (!elements.manifesto) return;
-    if (typeIndex < MANIFESTO_TEXT.length) {
-        const char = MANIFESTO_TEXT[typeIndex];
-        if (char === '\n') {
-            elements.manifesto.innerHTML += '<br>';
-        } else {
-            const span = document.createElement('span');
-            span.textContent = char;
-            span.style.opacity = '0';
-            span.style.transition = 'opacity 0.8s ease';
-            elements.manifesto.appendChild(span);
-            requestAnimationFrame(() => span.style.opacity = '1');
-        }
-        typeIndex++;
-        setTimeout(typeWriter, 60);
-    }
-}
 
 // 1. 自动生成列表
 function renderArchive() {
@@ -87,8 +60,6 @@ function renderArchive() {
 window.onload = () => {
     renderArchive();
     if (elements.brand) setTimeout(() => elements.brand.style.opacity = "1", 500);
-    setTimeout(typeWriter, 3000);
-    // 启动时钟
     if (!window.clockTimer && elements.clock) {
         window.clockTimer = setInterval(() => {
             elements.clock.innerText = new Date().toLocaleTimeString();
@@ -211,36 +182,17 @@ function updateListHighlight(activeId) {
 
 // 9. 全局键盘逃生
 document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-        window.closeInspection();
-        if (elements.overlay && elements.overlay.style.display === 'flex') closeAuth();
-    }
+    if (e.key === 'Escape') window.closeInspection();
 });
 
-const navSystem = document.getElementById('nav-system');
-const menuTrigger = document.getElementById('menu-trigger');
 const collectionsBtn = document.getElementById('btn-collections');
-
-// 切换菜单
-menuTrigger.onclick = () => {
-    playClick();
-    navSystem.classList.toggle('active');
-};
 
 // 点击 Collection 后的联动 → 平滑滚动到产品档案
 collectionsBtn.onclick = () => {
     playClick();
-    navSystem.classList.remove('active');
     const archive = document.getElementById('archive-layer');
     if (archive) archive.scrollIntoView({ behavior: 'smooth' });
 };
-
-// 点击页面其他地方自动收起菜单
-document.addEventListener('click', (e) => {
-    if (!navSystem.contains(e.target) && navSystem.classList.contains('active')) {
-        navSystem.classList.remove('active');
-    }
-});
 
 
 const returnToVoid = () => {
