@@ -2,27 +2,27 @@
     box-sizing: border-box;
 }
 html {
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
     width: 100vw;
-    height: 100vh;
-    background: #121210; /* 这里的颜色必须和背景一致，即使漏了也看不出来 */
+    height: auto;
+    background: #121210;
 }
 /* 基础重置与光标 */
 body {
     margin: 0;
         padding: 0;
         width: 100%;
-        height: 100%;
-        position: fixed; /* 核心：用 fixed 替代 block，彻底剥夺滚动权限 */
-        top: 0;
-        left: 0;
-        overflow: hidden !important;
+        min-height: 100vh;
+        position: relative;
+        overflow-x: hidden;
 
-        /* 之前的背景与动画逻辑 ... */
         background-color: #121210;
         background-image:
             radial-gradient(circle at center, rgba(45, 42, 35, 0.45) 0%, transparent 80%),
-            url('assets/asfalt-dark.png');        background-size: 130% 130%;
+            url('assets/asfalt-dark.png');
+        background-size: 130% 130%;
+        background-attachment: fixed;
         animation: breathingGlow 60s ease-in-out infinite;
 
         color: #a09d94;
@@ -66,19 +66,17 @@ body::after {
 
 /* 首页 Manifesto 样式 */
 #void-container {
-		width: 100vw;
-    max-width: 1000px;
+    width: 100%;
+    max-width: 100%;
     z-index: 5;
-    position: fixed;
-    top: 45%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    position: relative;
+    height: 100vh;
     text-align: center;
-    display: block !important; /* 强制声明 block，防止被其他样式污染 */
-
-
-        /* 核心属性 2：禁止选中文字，让它看起来更像一个印刷上去的符号或图片 */
-        user-select: none;
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
 }
 
 h1 {
@@ -195,19 +193,17 @@ h1 {
 }
 /* 档案层样式 */
 #archive-layer {
-    position: fixed; top: 0; left: 0; width: 100%; max-width: 100vw; height: 100vh;
-    background-color: #121210;
-    display: none;
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    background-color: transparent;
+    display: flex;
     flex-direction: column;
-    align-items: stretch; /* 核心修改：不再强制居中，允许子元素撑满宽度 */
-    z-index: 3000;
+    align-items: stretch;
     padding: 80px 40px 40px 40px;
-    overflow: hidden;
-    opacity: 0; transition: opacity 1.5s ease;
-    background-image:
-            radial-gradient(circle at center, rgba(45, 42, 35, 0.25) 0%, transparent 85%),
-            url('assets/asfalt-dark.png');
-    background-size: cover; box-sizing: border-box;
+    overflow: visible;
+    opacity: 1;
+    box-sizing: border-box;
 }
 
 .split-container {
@@ -911,48 +907,22 @@ h2#rpt-id {
     scrollbar-color: rgba(140, 126, 101, 0.2) transparent;
 }
 
-#sync-terminal {
+/* Scroll hint indicator */
+.scroll-hint {
     position: absolute;
-    top: 100%; /* 紧贴打字机底部边界 */
-    left: 0;
-    width: 100%; /* 占满父容器宽度，不留偏移余地 */
-
-    /* 这里不要写 display，由 JS 控制 */
-    justify-content: center; /* 内部元素绝对居中 */
-    align-items: flex-end; /* 文字和横线底边平齐 */
-    gap: 15px;
-    margin-top: 35px; /* 往下推的安全距离 */
-    z-index: 10;
-    white-space: nowrap;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 16px;
+    color: #2a2825;
+    pointer-events: none;
+    user-select: none;
+    animation: scrollHintPulse 2.5s ease-in-out infinite;
 }
 
-.terminal-label {
-    font-size: 8px;
-    color: #4a453a;
-    letter-spacing: 0.3em;
-    padding-bottom: 2px;
-}
-
-#key-input {
-    background: transparent !important;
-    border: none !important;
-    border-bottom: 1px solid rgba(140, 126, 101, 0.4) !important;
-    color: #4a453a;
-    font-family: inherit;
-    font-size: 14px;
-    width: 60px; /* 锁死短线 */
-    text-align: center;
-    outline: none;
-    letter-spacing: 0.2em;
-    padding: 0 0 2px 0;
-    text-transform: uppercase;
-    /* 严禁在这里写 transition: all，只允许颜色和宽度变化 */
-    transition: border-color 0.6s ease, width 0.6s ease;
-}
-
-#key-input:focus {
-    width: 60px;
-    border-bottom: 1px solid rgba(140, 126, 101, 0.8) !important;
+@keyframes scrollHintPulse {
+    0%, 100% { opacity: 0.2; transform: translateX(-50%) translateY(0); }
+    50% { opacity: 0.6; transform: translateX(-50%) translateY(6px); }
 }
 
 #nav-system {

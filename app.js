@@ -1,8 +1,7 @@
-let currentActiveId = null;
+﻿let currentActiveId = null;
 const elements = {
     brand: document.getElementById('brand-name'),
     manifesto: document.getElementById("manifesto-text"),
-    keyInput: document.getElementById('key-input'),
     archive: document.getElementById('archive-layer'),
     void: document.getElementById('void-container'),
     cursor: document.getElementById('custom-cursor'),
@@ -89,93 +88,21 @@ window.onload = () => {
     renderArchive();
     if (elements.brand) setTimeout(() => elements.brand.style.opacity = "1", 500);
     setTimeout(typeWriter, 3000);
+    // 启动时钟
+    if (!window.clockTimer && elements.clock) {
+        window.clockTimer = setInterval(() => {
+            elements.clock.innerText = new Date().toLocaleTimeString();
+        }, 1000);
+    }
 };
 
-// 4. 鼠标与光标逻辑（已加防崩溃护盾）
+// 4. 鼠标与光标逻辑
 document.addEventListener('mousemove', e => {
     if (elements.cursor) {
         elements.cursor.style.left = e.clientX + 'px';
         elements.cursor.style.top = e.clientY + 'px';
     }
-    if (elements.preview && elements.preview.style.display === 'block') {
-        elements.preview.style.left = (e.clientX + 20) + 'px';
-        elements.preview.style.top = (e.clientY + 20) + 'px';
-    }
 });
-
-// 5. 授权逻辑（access-trigger 已注释，这段保留以防未来重启）
-
-if (elements.keyInput) {
-    elements.keyInput.addEventListener('input', (e) => {
-        if (e.target.value.length > 0) playClick();
-        if (e.target.value.length === 3) setTimeout(validateAccess, 100);
-    });
-}
-
-const validateAccess = () => {
-    if (elements.keyInput.value === "123") {
-        if (elements.overlay) elements.overlay.style.opacity = '0';        if (elements.void) {
-            elements.void.style.transform = "translate(-50%, -150%) blur(20px)";
-            elements.void.style.opacity = "0";
-        }
-
-				const navSystem = document.getElementById('nav-system');
-				const collectionBtn = document.getElementById('btn-collections');
-
-        if (navSystem) {
-            navSystem.classList.add('in-archive');
-            navSystem.classList.remove('active'); // 强制收起展开的菜单
-        }
-
-        if (collectionBtn) {
-            collectionBtn.innerText = "00_RETURN"; // 修改文字
-            collectionBtn.onclick = (e) => {
-                e.stopPropagation(); // 防止触发父级点击
-                returnToVoid();    // 执行返回主页的逻辑
-            };
-        }
-
-        // 2. 隐藏主页内容
-        if (elements.void) {
-            elements.void.style.opacity = "0";
-            elements.void.style.pointerEvents = "none";
-        }
-        setTimeout(() => {
-            if (elements.overlay) elements.overlay.style.display = 'none';
-            if (elements.archive) {
-                elements.archive.style.display = 'flex';
-                void elements.archive.offsetWidth; // 触发重绘
-                renderArchive(); // 重新渲染确保 DOM 最新
-                elements.archive.style.opacity = '1';
-            }
-            if (!window.clockTimer && elements.clock) {
-                window.clockTimer = setInterval(() => {
-                    elements.clock.innerText = new Date().toLocaleTimeString();
-                }, 1000);
-            }
-        }, 800);
-    } else {
-        if (elements.keyInput) elements.keyInput.value = "";
-    }
-};
-
-window.closeAuth = () => {
-    playClick();
-    if (elements.keyInput) {
-        elements.keyInput.blur();
-        elements.keyInput.value = "";
-    }
-    if (elements.overlay) {
-        elements.overlay.style.opacity = '0';
-        setTimeout(() => elements.overlay.style.display = 'none', 600);
-    }
-};
-
-if (elements.overlay) {
-    elements.overlay.onclick = (e) => {
-        if (e.target === elements.overlay) closeAuth();
-    };
-}
 
 // 6. 档案系统交互核心 (防崩溃版)
 window.showPreview = (url) => {
@@ -300,24 +227,12 @@ menuTrigger.onclick = () => {
     navSystem.classList.toggle('active');
 };
 
-// 点击 Collection 后的联动
+// 点击 Collection 后的联动 → 平滑滚动到产品档案
 collectionsBtn.onclick = () => {
     playClick();
-
-    // 1. 关闭菜单
     navSystem.classList.remove('active');
-
-    // 2. 唤醒密码输入框 (sync-terminal)
-    const terminal = document.getElementById('sync-terminal');
-    if (terminal) {
-        terminal.style.display = 'flex';
-        // 稍微延迟淡入，给菜单收起留出视觉空间
-        setTimeout(() => {
-            terminal.style.transition = "opacity 1.5s ease";
-            terminal.style.opacity = "1";
-            //document.getElementById('key-input').focus();
-        }, 400);
-    }
+    const archive = document.getElementById('archive-layer');
+    if (archive) archive.scrollIntoView({ behavior: 'smooth' });
 };
 
 // 点击页面其他地方自动收起菜单
@@ -327,96 +242,10 @@ document.addEventListener('click', (e) => {
     }
 });
 
+
 const returnToVoid = () => {
     playClick();
-
-		const terminal = document.getElementById('sync-terminal');
-    const navSystem = document.getElementById('nav-system');
-    const collectionBtn = document.getElementById('btn-collections');
-    if (terminal) {
-        terminal.style.opacity = "0"; // 先淡出
-        setTimeout(() => {
-            terminal.style.display = 'none'; // 彻底从物理层面移除
-            if (elements.keyInput) elements.keyInput.value = ""; // 清空已输入的密码
-        }, 500);
-    }
-
-    if (navSystem) {
-        // 强制收起，并暂时取消过渡动画，直接“关灯”
-        navSystem.style.transform = "translate(20px, 20px) scale(0.8)";
-                 navSystem.style.opacity = "0";
-                 navSystem.classList.remove('active');
-    }
-
-    if (collectionBtn) {
-        //collectionBtn.innerText = "01_COLLECTION";
-        // 恢复原本的点击逻辑：再次点击又会弹出密码框
-        collectionBtn.onclick = originalCollectionLogic;
-    }
-
-		setTimeout(() => {
-        // 恢复文字和逻辑
-        if (collectionBtn) {
-            collectionBtn.innerText = "01_COLLECTION";
-            collectionBtn.onclick = originalCollectionLogic;
-        }
-
-        // 恢复导航的基础状态类（移除档案层皮肤）
-        if (navSystem) {
-            navSystem.classList.remove('in-archive');
-            // 稍后再恢复不透明度，确保用户回主页后能看到它
-            //navSystem.style.transition = "all 1.2s cubic-bezier(0.16, 1, 0.3, 1)";
-            navSystem.style.transform = "translate(0, 0) scale(1)";
-        }
-				const terminal = document.getElementById('sync-terminal');
-        if (terminal) {
-            terminal.style.display = 'none';
-
-            if (elements.keyInput) elements.keyInput.value = "";
-        }
-    }, 600);
-    // 2. 视觉反转
-    if (elements.archive) {
-        elements.archive.style.opacity = "0";
-        setTimeout(() => elements.archive.style.display = 'none', 800);
-    }
-
-    if (elements.void) {
-        elements.void.style.display = 'block';
-        // 关键：在显示之前，先把 void 放在它飞走的那个位置 (-150%)
-        // 这样它才能有一个从上方降落回来的动画
-        elements.void.style.transform = "translate(-50%, -150%) blur(20px)";
-
-        void elements.void.offsetWidth; // 触发重绘
-
-        setTimeout(() => {
-            // 优雅降落并对焦
-            elements.void.style.transform = "translate(-50%, -50%) blur(0px)";
-            elements.void.style.opacity = "1";
-            elements.void.style.pointerEvents = "auto";
-
-            // 主页完全就位后，导航栏才亮起
-            if (navSystem) navSystem.style.opacity = "1";
-        }, 500);
-    }    // 3. 重新显示 Request Access 触发器（如果需要）
-    const accessTrigger = document.getElementById('access-trigger');
-    if (accessTrigger) {
-        accessTrigger.style.opacity = "1";
-        accessTrigger.style.pointerEvents = "auto";
-    }
-};
-
-// 提取原本的 Collection 点击逻辑，方便重复调用
-const originalCollectionLogic = () => {
-    playClick();
-    document.getElementById('nav-system').classList.remove('active');
-    const terminal = document.getElementById('sync-terminal');
-    if (terminal) {
-        terminal.style.display = 'flex';
-        setTimeout(() => {
-            terminal.style.opacity = "1";
-        }, 50);
-    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
 // 显微镜追踪引擎 (Microscopic Tracking Engine)
