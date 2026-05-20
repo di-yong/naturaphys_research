@@ -1,212 +1,80 @@
 const ARCHIVE_DATA = [
     {
-        id: "SP_001",
-        name: "SOIL_WASHED_OVERCOAT",
-        status: "// [ AVAILABLE / 04 ]",
-        category: "ORGANIC", // 核心新增：定义分类
-        preview_img: "assets/images1.jpg",
-        report: {
-            material: "TUSSAH SILK (柞蚕丝) / WILD HARVESTED",
-            process: "30-DAY FULVIC ACID FERMENTATION / NATURAL OXIDATION",
-            coords: "31.2304° N, 121.4737° E",
-            notes: "纤维呈现半透明结晶质感，表面保留了泥土冲刷后的有机纹理。pH值趋于中性。"
-        }
+        code: "NP-WS-G01/P-M-01",
+        category: "WILD SILK",
+        object: "Botanical-Infiltrated Heavyweight Wild Silk Pullover Gown",
+        state: "AVAILABLE",
+        material: "100% Aged Hand-spun Wild Silk",
+        caliber: "3.0MM",
+        treatment: "Object-Dyed via Botanical Pigment Infiltration / Manual Immersion [6 CYCLES]",
+        spec: "L: 130 / C: 170",
+        weight: "2.84 KG",
+        seq: "01/01",
+        img: "assets/images1.png"
     },
     {
-        id: "SP_002",
-        name: "FIRE_GRASS_WEAVE",
-        status: "// [ ARCHIVED ]",
-        category: "MINERAL", // 核心新增：定义分类
-        preview_img: "path/to/img2.jpg",
-        report: {
-            material: "WILD FIRE GRASS (火草) / HAND-TWISTED FIBER",
-            process: "ASH-ALKALINE SCOURING / MANUAL COMPRESSION",
-            coords: "25.0388° N, 102.7122° E",
-            notes: "高度耐磨损结构。火草纤维与柞蚕丝交织，模拟了植物在地层中的压力演化。"
-        }
+        code: "NP-WS-G02/O-M-01",
+        category: "WILD SILK",
+        object: "Botanical-Infiltrated Heavyweight Wild Silk Open-front Gown",
+        state: "AVAILABLE",
+        material: "100% Aged Hand-spun Wild Silk (柞蚕丝)",
+        caliber: "3.0MM",
+        treatment: "Object-Dyed via Botanical Pigment Infiltration / Manual Immersion [6 CYCLES]",
+        spec: "L: 130 / C: 175",
+        weight: "2.91 KG",
+        seq: "01/01",
+        img: ""
     },
     {
-        id: "SP_003",
-        name: "FIRE_GRASS_WEAVE",
-        status: "// [ ARCHIVED ]",
-        category: "MINERAL", // 核心新增：定义分类
-        preview_img: "path/to/img2.jpg",
-        report: {
-            material: "WILD FIRE GRASS (火草) / HAND-TWISTED FIBER",
-            process: "ASH-ALKALINE SCOURING / MANUAL COMPRESSION",
-            coords: "25.0388° N, 102.7122° E",
-            notes: "高度耐磨损结构。火草纤维与柞蚕丝交织，模拟了植物在地层中的压力演化。"
-        }
+        code: "NP-FG-G01/P-M-01",
+        category: "FIREWEED",
+        object: "Compressed Fireweed Cloth Pullover Gown",
+        state: "AVAILABLE",
+        material: "100% Hand-twisted Wild Fireweed Fiber (火草布)",
+        caliber: "--",
+        treatment: "Ash-Alkaline Scouring / Manual Compression [4 CYCLES]",
+        spec: "L: 128 / C: 168",
+        weight: "3.12 KG",
+        seq: "01/01",
+        img: ""
     },
     {
-        id: "SP_004",
-        name: "FIRE_GRASS_WEAVE",
-        status: "// [ ARCHIVED ]",
-        category: "MINERAL", // 核心新增：定义分类
-        preview_img: "path/to/img2.jpg",
-        report: {
-            material: "WILD FIRE GRASS (火草) / HAND-TWISTED FIBER",
-            process: "ASH-ALKALINE SCOURING / MANUAL COMPRESSION",
-            coords: "25.0388° N, 102.7122° E",
-            notes: "高度耐磨损结构。火草纤维与柞蚕丝交织，模拟了植物在地层中的压力演化。"
-        }
+        code: "NP-FG-G02/O-M-01",
+        category: "FIREWEED",
+        object: "Compressed Fireweed Cloth Open-front Gown",
+        state: "AVAILABLE",
+        material: "100% Hand-twisted Wild Fireweed Fiber (火草布)",
+        caliber: "--",
+        treatment: "Ash-Alkaline Scouring / Manual Compression [4 CYCLES]",
+        spec: "L: 128 / C: 172",
+        weight: "3.20 KG",
+        seq: "01/01",
+        img: ""
     },
     {
-        id: "SP_005",
-        name: "FIRE_GRASS_WEAVE",
-        status: "// [ ARCHIVED ]",
-        category: "MINERAL", // 核心新增：定义分类
-        preview_img: "path/to/img2.jpg",
-        report: {
-            material: "WILD FIRE GRASS (火草) / HAND-TWISTED FIBER",
-            process: "ASH-ALKALINE SCOURING / MANUAL COMPRESSION",
-            coords: "25.0388° N, 102.7122° E",
-            notes: "高度耐磨损结构。火草纤维与柞蚕丝交织，模拟了植物在地层中的压力演化。"
-        }
-    },
-
-    {
-        id: "SP_006",
-        name: "FIRE_GRASS_WEAVE",
-        status: "// [ ARCHIVED ]",
-        category: "MINERAL", // 核心新增：定义分类
-        preview_img: "path/to/img2.jpg",
-        report: {
-            material: "WILD FIRE GRASS (火草) / HAND-TWISTED FIBER",
-            process: "ASH-ALKALINE SCOURING / MANUAL COMPRESSION",
-            coords: "25.0388° N, 102.7122° E",
-            notes: "高度耐磨损结构。火草纤维与柞蚕丝交织，模拟了植物在地层中的压力演化。"
-        }
-    },
-
-    {
-	      id: "SP_007",
-	      name: "FIRE_GRASS_WEAVE",
-	      status: "// [ ARCHIVED ]",
-	      category: "MINERAL", // 核心新增：定义分类
-	      preview_img: "path/to/img2.jpg",
-	      report: {
-	          material: "WILD FIRE GRASS (火草) / HAND-TWISTED FIBER",
-	          process: "ASH-ALKALINE SCOURING / MANUAL COMPRESSION",
-	          coords: "25.0388° N, 102.7122° E",
-	          notes: "高度耐磨损结构。火草纤维与柞蚕丝交织，模拟了植物在地层中的压力演化。"
-	      }
-	  },
-    {
-	      id: "SP_008",
-	      name: "FIRE_GRASS_WEAVE",
-	      status: "// [ ARCHIVED ]",
-	      category: "MINERAL", // 核心新增：定义分类
-	      preview_img: "path/to/img2.jpg",
-	      report: {
-	          material: "WILD FIRE GRASS (火草) / HAND-TWISTED FIBER",
-	          process: "ASH-ALKALINE SCOURING / MANUAL COMPRESSION",
-	          coords: "25.0388° N, 102.7122° E",
-	          notes: "高度耐磨损结构。火草纤维与柞蚕丝交织，模拟了植物在地层中的压力演化。"
-	      }
-	  },
-    {
-        id: "SP_009",
-        name: "FIRE_GRASS_WEAVE",
-        status: "// [ ARCHIVED ]",
-        category: "MINERAL", // 核心新增：定义分类
-        preview_img: "path/to/img2.jpg",
-        report: {
-            material: "WILD FIRE GRASS (火草) / HAND-TWISTED FIBER",
-            process: "ASH-ALKALINE SCOURING / MANUAL COMPRESSION",
-            coords: "25.0388° N, 102.7122° E",
-            notes: "高度耐磨损结构。火草纤维与柞蚕丝交织，模拟了植物在地层中的压力演化。"
-        }
+        code: "NP-HM-G01/P-M-01",
+        category: "HEMP",
+        object: "Raw Han Hemp Pullover Gown",
+        state: "AVAILABLE",
+        material: "100% Hand-spun Han Hemp (汉麻)",
+        caliber: "--",
+        treatment: "Natural Botanical Immersion / Cold-Water Rinse [3 CYCLES]",
+        spec: "L: 126 / C: 166",
+        weight: "2.40 KG",
+        seq: "01/01",
+        img: ""
     },
     {
-	      id: "SP_010",
-	      name: "FIRE_GRASS_WEAVE",
-	      status: "// [ ARCHIVED ]",
-	      category: "MINERAL", // 核心新增：定义分类
-	      preview_img: "path/to/img2.jpg",
-	      report: {
-	          material: "WILD FIRE GRASS (火草) / HAND-TWISTED FIBER",
-	          process: "ASH-ALKALINE SCOURING / MANUAL COMPRESSION",
-	          coords: "25.0388° N, 102.7122° E",
-	          notes: "高度耐磨损结构。火草纤维与柞蚕丝交织，模拟了植物在地层中的压力演化。"
-	      }
-    },
-    {
-        id: "SP_011",
-        name: "FIRE_GRASS_WEAVE",
-        status: "// [ ARCHIVED ]",
-        category: "MINERAL", // 核心新增：定义分类
-        preview_img: "path/to/img2.jpg",
-        report: {
-            material: "WILD FIRE GRASS (火草) / HAND-TWISTED FIBER",
-            process: "ASH-ALKALINE SCOURING / MANUAL COMPRESSION",
-            coords: "25.0388° N, 102.7122° E",
-            notes: "高度耐磨损结构。火草纤维与柞蚕丝交织，模拟了植物在地层中的压力演化。"
-        }
-    },
-    {
-        id: "SP_012",
-        name: "FIRE_GRASS_WEAVE",
-        status: "// [ ARCHIVED ]",
-        category: "MINERAL", // 核心新增：定义分类
-        preview_img: "path/to/img2.jpg",
-        report: {
-            material: "WILD FIRE GRASS (火草) / HAND-TWISTED FIBER",
-            process: "ASH-ALKALINE SCOURING / MANUAL COMPRESSION",
-            coords: "25.0388° N, 102.7122° E",
-            notes: "高度耐磨损结构。火草纤维与柞蚕丝交织，模拟了植物在地层中的压力演化。"
-        }
-    },
-    {
-        id: "SP_013",
-        name: "FIRE_GRASS_WEAVE",
-        status: "// [ ARCHIVED ]",
-        category: "MINERAL", // 核心新增：定义分类
-        preview_img: "path/to/img2.jpg",
-        report: {
-            material: "WILD FIRE GRASS (火草) / HAND-TWISTED FIBER",
-            process: "ASH-ALKALINE SCOURING / MANUAL COMPRESSION",
-            coords: "25.0388° N, 102.7122° E",
-            notes: "高度耐磨损结构。火草纤维与柞蚕丝交织，模拟了植物在地层中的压力演化。"
-        }
-    },
-    {
-        id: "SP_014",
-        name: "FIRE_GRASS_WEAVE",
-        status: "// [ ARCHIVED ]",
-        category: "MINERAL", // 核心新增：定义分类
-        preview_img: "path/to/img2.jpg",
-        report: {
-            material: "WILD FIRE GRASS (火草) / HAND-TWISTED FIBER",
-            process: "ASH-ALKALINE SCOURING / MANUAL COMPRESSION",
-            coords: "25.0388° N, 102.7122° E",
-            notes: "高度耐磨损结构。火草纤维与柞蚕丝交织，模拟了植物在地层中的压力演化。"
-        }
-    },
-    {
-        id: "SP_015",
-        name: "FIRE_GRASS_WEAVE",
-        status: "// [ ARCHIVED ]",
-        category: "MINERAL", // 核心新增：定义分类
-        preview_img: "path/to/img2.jpg",
-        report: {
-            material: "WILD FIRE GRASS (火草) / HAND-TWISTED FIBER",
-            process: "ASH-ALKALINE SCOURING / MANUAL COMPRESSION",
-            coords: "25.0388° N, 102.7122° E",
-            notes: "高度耐磨损结构。火草纤维与柞蚕丝交织，模拟了植物在地层中的压力演化。"
-        }
-    },
-    {
-        id: "SP_016",
-        name: "FIRE_GRASS_WEAVE",
-        status: "// [ ARCHIVED ]",
-        category: "MINERAL", // 核心新增：定义分类
-        preview_img: "path/to/img2.jpg",
-        report: {
-            material: "WILD FIRE GRASS (火草) / HAND-TWISTED FIBER",
-            process: "ASH-ALKALINE SCOURING / MANUAL COMPRESSION",
-            coords: "25.0388° N, 102.7122° E",
-            notes: "高度耐磨损结构。火草纤维与柞蚕丝交织，模拟了植物在地层中的压力演化。"
-        }
-    },
+        code: "NP-LT-G01/P-M-01",
+        category: "EARTH CLOTH",
+        object: "Aged Earth-Cloth Pullover Gown",
+        state: "AVAILABLE",
+        material: "100% Aged Hand-woven Earth Cloth (老土布)",
+        caliber: "--",
+        treatment: "Botanical Pigment Cold-Dye / Sun Oxidation [Natural]",
+        spec: "L: 125 / C: 164",
+        weight: "2.55 KG",
+        seq: "01/01",
+        img: ""
+    }
 ];

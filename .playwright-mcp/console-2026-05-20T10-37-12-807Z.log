@@ -1,0 +1,18 @@
+[     579ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://grainy-gradients.vercel.app/noise.svg:0
+[    1058ms] [WARNING] <meta name="apple-mobile-web-app-capable" content="yes"> is deprecated. Please include <meta name="mobile-web-app-capable" content="yes"> @ http://localhost:8765/:0
+[   85107ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:8765/favicon.ico:0
+[  237810ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://grainy-gradients.vercel.app/noise.svg:0
+[  237848ms] [WARNING] <meta name="apple-mobile-web-app-capable" content="yes"> is deprecated. Please include <meta name="mobile-web-app-capable" content="yes"> @ http://localhost:8765/:0
+[  249213ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:8765/favicon.ico:0
+[  260107ms] [LOG] [SYSTEM]: Switch to Specimen SP_001 @ http://localhost:8765/app.js:123
+[  267474ms] [LOG] System: Executing Collapse and Resetting List... @ http://localhost:8765/app.js:128
+[  267518ms] [LOG] [SYSTEM]: Archive view restored to default. @ http://localhost:8765/app.js:144
+[  267519ms] [LOG] System: Executing Collapse and Resetting List... @ http://localhost:8765/app.js:128
+[  271072ms] [LOG] [SYSTEM]: Switch to Specimen SP_001 @ http://localhost:8765/app.js:123
+[  275533ms] [LOG] System: Executing Collapse and Resetting List... @ http://localhost:8765/app.js:128
+[  275584ms] [LOG] [SYSTEM]: Archive view restored to default. @ http://localhost:8765/app.js:144
+[  275585ms] [LOG] System: Executing Collapse and Resetting List... @ http://localhost:8765/app.js:128
+[  297241ms] [LOG] [SYSTEM]: Switch to Specimen SP_001 @ http://localhost:8765/app.js:123
+[  438086ms] [LOG] System: Executing Collapse and Resetting List... @ http://localhost:8765/app.js:128
+[  438137ms] [LOG] [SYSTEM]: Archive view restored to default. @ http://localhost:8765/app.js:144
+[  438137ms] [LOG] System: Executing Collapse and Resetting List... @ http://localhost:8765/app.js:128

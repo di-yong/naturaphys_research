@@ -1,87 +1,43 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>NATPHX</title>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
 
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-<!--<div id="protocol-status">ALTITUDE_2468M // NATURAPHYS</div>-->
-<!--<div id="geo-coords">LOG_2026 // SPECIMEN_ARCHIVE</div>-->
-<div id="custom-cursor"></div>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!--<div id="protocol-status">ALTITUDE_2468M // NATURAPHYS</div>-->
+    <!--<div id="geo-coords">LOG_2026 // SPECIMEN_ARCHIVE</div>-->
+    <div id="custom-cursor"></div>
 
-<nav id="top-nav">
-    <span class="nav-link" id="btn-collections">COLLECTION</span>
-    <a class="nav-link" href="mailto:contact@natphx.com">CONTACT</a>
-</nav>
-
-<div id="void-container">
-    <h1 id="brand-name">NATPHX</h1>
-    <div class="scroll-hint">▾</div>
-</div>
-<!--<div id="access-trigger">[ REQUEST ACCESS_KEY ]</div>-->
-
-<!--<div id="auth-overlay">-->
-<!--    <div class="auth-box">-->
-<!--        <div style="font-size: 8px; color: #4a453a; margin-bottom: 30px; letter-spacing: 0.3em;">NODE_AUTHORIZATION</div>-->
-<!--        <input type="password" id="key-input" autocomplete="new-password" spellcheck="false">-->
-<!--        <div class="auth-contact">ENCRYPTED_INQUIRY: INFO@NATURAPHYS.COM</div>-->
-<!--    </div>-->
-<!--</div>-->
-
-<div id="archive-layer">
-    <div class="archive-header">
-        <span>COLLECTION</span>
-        <span id="live-clock">00:00:00</span>
+    <div id="main-frame">
+      <h1 id="brand-name">NATPHX</h1>
+      <div id="object-list"></div>
+      <a href="mailto:hello@natphx.com" id="contact-email">HELLO@NATPHX.COM</a>
     </div>
 
-    <div class="split-container">
-        <div class="specimen-list-wrapper">
-            <div class="specimen-list">
-            </div>
-        </div>
-
-        <div id="inspection-panel">
-            <div class="inspection-content">
-                <div class="inspection-header">
-                    <h2 id="rpt-id">SELECT_SPECIMEN</h2>
-                    <div class="inspection-close" onclick="closeInspection()">
-                        <span class="close-icon"></span> [X]
-                    </div>
-                </div>
-
-                <div class="inspection-body">
-                    <div class="report-main-img" id="rpt-img"></div>
-                    <div class="report-info">
-                        <div class="report-field">
-                            <label>MATERIAL_COMPOSITION</label>
-                            <span id="rpt-material">--</span>
-                        </div>
-                        <div class="report-field">
-                            <label>PROCESSING_METHOD</label>
-                            <span id="rpt-process">--</span>
-                        </div>
-                        <div class="report-notes-box">
-                            <p id="rpt-notes">--</p>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div id="object-card">
+      <div id="card-close">[ CLOSE ]</div>
+      <div id="card-prev">[ ← ]</div>
+      <div id="card-next">[ → ]</div>
+      <div id="card-img"></div>
+      <div id="card-fields"></div>
     </div>
-</div>
 
-<div id="dust-layer"></div>
+    <div id="img-fullscreen">
+      <div id="img-fs-inner"></div>
+    </div>
 
-<audio id="click-sound" src="assets/click.wav" preload="auto"></audio>
+    <audio id="click-sound" src="assets/click.wav" preload="auto"></audio>
 
-<script src="data.js"></script>
-<script src="app.js"></script>
-</body>
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+  </body>
 </html>
