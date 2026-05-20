@@ -1,0 +1,10 @@
+# Root-level screenshots (dev artifacts)
+/*.png
+
+# Playwright MCP debug logs
+.playwright-mcp/
+
+# Editor / OS
+.idea/
+.DS_Store
+Thumbs.db
