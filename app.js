@@ -62,9 +62,9 @@ function openCard(code) {
             ['CODE',       item.code],
             ['OBJECT',     item.object],
             ['MATERIAL',   item.material],
-            ['THICKNESS',  item.thickness],
             ['PROCESS',    item.process],
             ['DIMENSIONS', item.dimensions],
+            ['THICKNESS',  item.thickness],
             ['WEIGHT',     item.weight],
             ['SEQ NO',     item.seq],
         ];

@@ -24,38 +24,28 @@ body {
         background-size: 100% 100%;
 
         color: #a09d94;
-        font-family: 'Courier New', monospace;
+        font-family: 'IBM Plex Mono', 'Courier New', monospace;
         cursor: none;
 
 }
 
 #custom-cursor {
-    width: 15px; height: 15px;
-    border: 1px solid rgba(212, 203, 179, 0.4); /* 改用暖色系，与整体统一 */
+    width: 6px; height: 6px;
+    background: rgba(160, 157, 148, 0.5);
     position: fixed; border-radius: 50%;
     pointer-events: none; z-index: 99999;
-    transform: translate(-50%, -50%) scale(1); /* 增加初始缩放 */
-    transition:
-        transform 0.1s ease-out,
-        width 0.3s ease,
-        height 0.3s ease,
-        background 0.3s ease,
-        opacity 0.3s ease; /* 增加多种属性的过渡 */
-    mix-blend-mode: difference;
+    transform: translate(-50%, -50%);
+    transition: opacity 0.1s linear;
     will-change: left, top;
 }
 
-/* --- 核心：当光标移入可点击元素时的“谦让”状态 --- */
 .cursor-hover {
-    transform: translate(-50%, -50%) scale(0.5) !important; /* 缩小一倍 */
-    background: rgba(212, 203, 179, 0.2); /* 淡淡地填充，像个实心的小点 */
-    opacity: 0.6; /* 变淡，不干扰文字阅读 */
-    border-color: transparent !important;
+    opacity: 0.2;
 }
 
 h1 {
-    font-family: "Inter", sans-serif;
-    font-weight: 100;
+    font-family: "Helvetica Neue", "Helvetica", Arial, sans-serif;
+    font-weight: 200;
     font-size: 14px;
     letter-spacing: 0.65em;
     color: #dcdcdc;
@@ -132,20 +122,20 @@ h1 {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 11px 0;
+    padding: 14px 0;
     cursor: pointer;
-    border-bottom: 1px solid #181715;
+    border-bottom: 1px solid #161614;
 }
 
 .list-item:hover .item-code {
-    color: #c8c0ae;
+    color: #8a8680;
 }
 
 .item-code {
     font-size: 9px;
     letter-spacing: 0.28em;
     color: #4a4640;
-    transition: color 0.35s ease;
+    transition: none;
 }
 
 .item-state {
@@ -181,7 +171,7 @@ h1 {
     grid-template-columns: 1fr 1fr;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.5s ease, visibility 0.5s ease;
+    transition: opacity 0.18s linear, visibility 0.18s linear;
     background: #0e0e0c;
 }
 
@@ -213,35 +203,35 @@ h1 {
 }
 
 #card-fields {
-    padding: 120px 70px 80px;
+    padding: 100px 80px 80px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     overflow-y: auto;
-    border-left: 1px solid #1e1e1b;
+    border-left: 1px solid #191917;
 }
 
 .card-row {
     display: flex;
     align-items: baseline;
-    border-bottom: 1px solid rgba(140, 126, 101, 0.08);
-    padding: 13px 0;
+    border-bottom: none;
+    padding: 16px 0;
 }
 
 .card-row label {
     white-space: nowrap;
     flex-shrink: 0;
-    min-width: 95px;
+    min-width: 115px;
     font-size: 7px;
-    letter-spacing: 0.4em;
-    color: #3d3a33;
+    letter-spacing: 0.45em;
+    color: #2e2c28;
     margin-right: 30px;
 }
 
 .card-row span {
     font-size: 10px;
-    letter-spacing: 0.12em;
-    color: #8c897f;
+    letter-spacing: 0.1em;
+    color: #7a7870;
     line-height: 1.8;
 }
 
@@ -251,14 +241,14 @@ h1 {
     right: 40px;
     font-size: 8px;
     letter-spacing: 0.4em;
-    color: #4a453a;
+    color: #3a3730;
     cursor: pointer;
     z-index: 2001;
-    transition: color 0.3s ease;
+    transition: color 0.1s linear;
     user-select: none;
 }
 
-#card-close:hover { color: #d4cbb3; }
+#card-close:hover { color: #a09d94; }
 
 /* ─────────────────────────────────────────────────────────
    SCREEN 3: CONTACT
@@ -276,11 +266,11 @@ h1 {
     letter-spacing: 0.5em;
     color: #3a3730;
     text-decoration: none;
-    transition: color 0.5s ease;
+    transition: color 0.1s linear;
     user-select: none;
 }
 
-#contact-email:hover { color: #d4cbb3; }
+#contact-email:hover { color: #7a7870; }
 
 /* ─────────────────────────────────────────────────────────
    SOLD STATE DIMMING
@@ -302,13 +292,13 @@ h1 {
     color: #4a453a;
     cursor: pointer;
     z-index: 2001;
-    transition: color 0.3s ease;
+    transition: color 0.1s linear;
     user-select: none;
 }
 #card-prev { left: 32px; }
 #card-next { right: 32px; }
 #card-prev:hover,
-#card-next:hover { color: #d4cbb3; }
+#card-next:hover { color: #7a7870; }
 
 /* ─────────────────────────────────────────────────────────
    IMAGE FULLSCREEN OVERLAY
@@ -325,7 +315,7 @@ h1 {
     justify-content: center;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.4s ease, visibility 0.4s ease;
+    transition: opacity 0.18s linear, visibility 0.18s linear;
     cursor: zoom-out;
 }
 #img-fullscreen.is-open {
