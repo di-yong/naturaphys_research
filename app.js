@@ -30,9 +30,9 @@ function renderList() {
     elements.list.innerHTML = Object.entries(groups).map(([cat, items], i) => `
         <div class="list-group${i > 0 ? ' has-gap' : ''}">
             ${items.map(item => `
-                <div class="list-item${item.state !== 'AVAILABLE' ? ' is-sold-item' : ''}" data-code="${item.code}">
+                <div class="list-item${item.state === 'SOLD' ? ' is-sold-item' : ''}" data-code="${item.code}">
                     <span class="item-code">${item.code}</span>
-                    <span class="item-state ${item.state === 'AVAILABLE' ? 'is-available' : 'is-sold'}"></span>
+                    <span class="item-state ${item.state !== 'SOLD' ? 'is-available' : 'is-sold'}"></span>
                 </div>
             `).join('')}
         </div>
@@ -57,16 +57,16 @@ function openCard(code) {
         }
     }
     if (elements.cardFields) {
-        const stateClass = item.state === 'AVAILABLE' ? 'is-available' : 'is-sold';
+        const stateClass = item.state !== 'SOLD' ? 'is-available' : 'is-sold';
         const rows = [
-            ['CODE',      item.code],
-            ['OBJECT',    item.object],
-            ['MATERIAL',  item.material],
-            ['CALIBER',   item.caliber],
-            ['TREATMENT', item.treatment],
-            ['SPEC',      item.spec],
-            ['WEIGHT',    item.weight],
-            ['SEQ NO',    item.seq],
+            ['CODE',       item.code],
+            ['OBJECT',     item.object],
+            ['MATERIAL',   item.material],
+            ['THICKNESS',  item.thickness],
+            ['PROCESS',    item.process],
+            ['DIMENSIONS', item.dimensions],
+            ['WEIGHT',     item.weight],
+            ['SEQ NO',     item.seq],
         ];
         elements.cardFields.innerHTML =
             rows.map(([label, val]) => `
@@ -131,6 +131,18 @@ document.addEventListener('mousemove', e => {
             }
             rafPending = false;
         });
+    }
+});
+
+const HOVER_SELECTORS = '.list-item, #card-close, #card-prev, #card-next, #contact-email, #card-img';
+document.addEventListener('mouseover', e => {
+    if (elements.cursor && e.target.closest(HOVER_SELECTORS)) {
+        elements.cursor.classList.add('cursor-hover');
+    }
+});
+document.addEventListener('mouseout', e => {
+    if (elements.cursor && e.target.closest(HOVER_SELECTORS)) {
+        elements.cursor.classList.remove('cursor-hover');
     }
 });
 

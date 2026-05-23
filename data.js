@@ -1,80 +1,142 @@
 const ARCHIVE_DATA = [
     {
-        code: "NP-WS-G01/P-M-01",
         category: "WILD SILK",
-        object: "Botanical-Infiltrated Heavyweight Wild Silk Pullover Gown",
-        state: "AVAILABLE",
-        material: "100% Aged Hand-spun Wild Silk",
-        caliber: "3.0MM",
-        treatment: "Object-Dyed via Botanical Pigment Infiltration / Manual Immersion [6 CYCLES]",
-        spec: "L: 130 / C: 170",
-        weight: "2.84 KG",
+        object: "Wild Silk Robe",
+        code: "WS-RB-01",
+        material: "Aged Hand-spun Wild Silk / Aged Hand-loomed Cotton",
+        process: "Botanical Immersion [06]",
+        dimensions: "130 × 170 CM ",
+        thickness: "3MM",
+        weight: "2.84KG",
         seq: "01/01",
-        img: "assets/images1.png"
+        state: "RELEASED",
+        
+        img: "assets/WildSilk/WildSilk_Robe_01.png"
     },
     {
-        code: "NP-WS-G02/O-M-01",
         category: "WILD SILK",
-        object: "Botanical-Infiltrated Heavyweight Wild Silk Open-front Gown",
-        state: "AVAILABLE",
-        material: "100% Aged Hand-spun Wild Silk (柞蚕丝)",
-        caliber: "3.0MM",
-        treatment: "Object-Dyed via Botanical Pigment Infiltration / Manual Immersion [6 CYCLES]",
-        spec: "L: 130 / C: 175",
-        weight: "2.91 KG",
+        object: "Wild Silk Trousers",
+        code: "WS-TR-01",
+        material: "Aged Hand-spun Wild Silk / Aged Hand-loomed Cotton",
+        process: "Botanical Immersion [06]",
+        dimensions: "130 × 170 CM ",
+        thickness: "3MM",
+        weight: "2.84KG",
         seq: "01/01",
-        img: ""
+        state: "RELEASED",
+        
+        img: "assets/WildSilk/WildSilk_Trousers_01.png"
     },
     {
-        code: "NP-FG-G01/P-M-01",
-        category: "FIREWEED",
-        object: "Compressed Fireweed Cloth Pullover Gown",
-        state: "AVAILABLE",
-        material: "100% Hand-twisted Wild Fireweed Fiber (火草布)",
-        caliber: "--",
-        treatment: "Ash-Alkaline Scouring / Manual Compression [4 CYCLES]",
-        spec: "L: 128 / C: 168",
-        weight: "3.12 KG",
+        category: "WILD SILK",
+        object: "Wild Silk Mantle",
+        code: "WS-MA-01",
+        material: "Aged Hand-spun Wild Silk / Aged Hand-loomed Cotton",
+        process: "Botanical Immersion [06]",
+        dimensions: "130 × 170 CM ",
+        thickness: "3MM",
+        weight: "2.84KG",
         seq: "01/01",
-        img: ""
+        state: "RELEASED",
+        
+        img: "assets/WildSilk/WildSilk_Mantle_01.png"
     },
     {
-        code: "NP-FG-G02/O-M-01",
-        category: "FIREWEED",
-        object: "Compressed Fireweed Cloth Open-front Gown",
-        state: "AVAILABLE",
-        material: "100% Hand-twisted Wild Fireweed Fiber (火草布)",
-        caliber: "--",
-        treatment: "Ash-Alkaline Scouring / Manual Compression [4 CYCLES]",
-        spec: "L: 128 / C: 172",
-        weight: "3.20 KG",
+        category: "WILD SILK",
+        object: "Wild Silk Low Crotch Trousers",
+        code: "WS-LCT-01",
+        material: "Aged Hand-spun Wild Silk / Aged Hand-loomed Cotton",
+        process: "Botanical Immersion [06]",
+        dimensions: "130 × 170 CM ",
+        thickness: "3MM",
+        weight: "2.84KG",
         seq: "01/01",
-        img: ""
+        state: "RELEASED",
+        
+        img: "assets/WildSilk/WildSilk_Low_Crotch_Trousers_01.png"
     },
     {
-        code: "NP-HM-G01/P-M-01",
-        category: "HEMP",
-        object: "Raw Han Hemp Pullover Gown",
-        state: "AVAILABLE",
-        material: "100% Hand-spun Han Hemp (汉麻)",
-        caliber: "--",
-        treatment: "Natural Botanical Immersion / Cold-Water Rinse [3 CYCLES]",
-        spec: "L: 126 / C: 166",
-        weight: "2.40 KG",
+        category: "Fire Weed",
+        object: "Fire Weed Gilet",
+        code: "FW-GI-01",
+        material: "Aged Hand-spun Wild Silk / Aged Hand-loomed Cotton",
+        process: "Botanical Immersion [06]",
+        dimensions: "130 × 170 CM ",
+        thickness: "3MM",
+        weight: "2.84KG",
         seq: "01/01",
-        img: ""
+        state: "RELEASED",
+        
+        img: "assets/FireWeed/FireWeed_Gilet_01.png"
     },
     {
-        code: "NP-LT-G01/P-M-01",
-        category: "EARTH CLOTH",
-        object: "Aged Earth-Cloth Pullover Gown",
-        state: "AVAILABLE",
-        material: "100% Aged Hand-woven Earth Cloth (老土布)",
-        caliber: "--",
-        treatment: "Botanical Pigment Cold-Dye / Sun Oxidation [Natural]",
-        spec: "L: 125 / C: 164",
-        weight: "2.55 KG",
+        category: "Fire Weed",
+        object: "Fire Weed Low Crotch Trousers",
+        code: "FW-LCT-01",
+        material: "Aged Hand-spun Wild Silk / Aged Hand-loomed Cotton",
+        process: "Botanical Immersion [06]",
+        dimensions: "130 × 170 CM ",
+        thickness: "3MM",
+        weight: "2.84KG",
         seq: "01/01",
-        img: ""
-    }
+        state: "RELEASED",
+        
+        img: "assets/FireWeed/FireWeed_Low_Crotch_Trousers_01.png"
+    },
+    {
+        category: "Fire Weed",
+        object: "Fire Weed Mantle",
+        code: "FW-MA-01",
+        material: "Aged Hand-spun Wild Silk / Aged Hand-loomed Cotton",
+        process: "Botanical Immersion [06]",
+        dimensions: "130 × 170 CM ",
+        thickness: "3MM",
+        weight: "2.84KG",
+        seq: "01/01",
+        state: "RELEASED",
+        
+        img: "assets/FireWeed/FireWeed_Mantle_01.png"
+    },
+    {
+        category: "Fire Weed",
+        object: "Fire Weed Robe",
+        code: "FW-RB-01",
+        material: "Aged Hand-spun Wild Silk / Aged Hand-loomed Cotton",
+        process: "Botanical Immersion [06]",
+        dimensions: "130 × 170 CM ",
+        thickness: "3MM",
+        weight: "2.84KG",
+        seq: "01/01",
+        state: "RELEASED",
+        
+        img: "assets/FireWeed/FireWeed_Robe_01.png"
+    },
+    {
+        category: "Fire Weed",
+        object: "Fire Weed Robe",
+        code: "FW-RB-02",
+        material: "Aged Hand-spun Wild Silk / Aged Hand-loomed Cotton",
+        process: "Botanical Immersion [06]",
+        dimensions: "130 × 170 CM ",
+        thickness: "3MM",
+        weight: "2.84KG",
+        seq: "01/01",
+        state: "RELEASED",
+        
+        img: "assets/FireWeed/FireWeed_Robe_02.png"
+    },
+    {
+        category: "Hemp",
+        object: "Hemp Robe",
+        code: "HP-RB-01",
+        material: "Aged Hand-spun Wild Silk / Aged Hand-loomed Cotton",
+        process: "Botanical Immersion [06]",
+        dimensions: "130 × 170 CM ",
+        thickness: "3MM",
+        weight: "2.84KG",
+        seq: "01/01",
+        state: "RELEASED",
+        
+        img: "assets/Hemp/Hemp_Robe_01.png"
+    },
 ];
