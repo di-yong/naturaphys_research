@@ -11,7 +11,8 @@ const ARCHIVE_DATA = [
         seq: "01/01",
         state: "RELEASED",
         
-        img: "assets/WildSilk/WildSilk_Robe_01.png"
+        img: "assets/WildSilk/WildSilk_Robe_01.png",
+        notes: "FIELD NOTE: Wild silk collected from rural mountain communities in Yunnan, China.Homespun cotton obtained through local hand-weaving cooperatives."
     },
     {
         category: "WILD SILK",

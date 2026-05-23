@@ -29,6 +29,7 @@ function renderList() {
 
     elements.list.innerHTML = Object.entries(groups).map(([cat, items], i) => `
         <div class="list-group${i > 0 ? ' has-gap' : ''}">
+            <div class="list-category">${cat}</div>
             ${items.map(item => `
                 <div class="list-item${item.state === 'SOLD' ? ' is-sold-item' : ''}" data-code="${item.code}">
                     <span class="item-code">${item.code}</span>
@@ -68,6 +69,9 @@ function openCard(code) {
             ['WEIGHT',     item.weight],
             ['SEQ NO',     item.seq],
         ];
+        const notesHtml = item.notes
+            ? `<div class="card-notes">${item.notes}</div>`
+            : '';
         elements.cardFields.innerHTML =
             rows.map(([label, val]) => `
                 <div class="card-row">
@@ -77,11 +81,21 @@ function openCard(code) {
             `<div class="card-row">
                 <label>STATE</label>
                 <span><i class="card-state-dot ${stateClass}"></i>${item.state}</span>
-            </div>`;
+            </div>` +
+            notesHtml;
     }
 
+    preloadAdjacent(code);
     if (elements.card) elements.card.classList.add('is-open');
     playClick();
+}
+
+function preloadAdjacent(code) {
+    const idx = ARCHIVE_DATA.findIndex(d => d.code === code);
+    [-1, 1, -2, 2].forEach(offset => {
+        const t = ARCHIVE_DATA[(idx + offset + ARCHIVE_DATA.length) % ARCHIVE_DATA.length];
+        if (t && t.img) { const img = new Image(); img.src = t.img; }
+    });
 }
 
 function closeCard() {
