@@ -127,9 +127,28 @@ function closeImgFullscreen() {
     if (fs) fs.classList.remove('is-open');
 }
 
+function preloadAllImages() {
+    const images = ARCHIVE_DATA.filter(d => d.img).map(d => d.img);
+    let i = 0;
+    function next() {
+        if (i >= images.length) return;
+        const img = new Image();
+        img.onload = img.onerror = () => { i++; next(); };
+        img.src = images[i];
+    }
+    // Start preloading 2 at a time to be network-friendly
+    next(); next();
+}
+
 window.onload = () => {
     renderList();
     if (elements.brand) setTimeout(() => elements.brand.style.opacity = '1', 500);
+    // After page is rendered, start background preload of all images
+    if ('requestIdleCallback' in window) {
+        requestIdleCallback(() => preloadAllImages(), { timeout: 3000 });
+    } else {
+        setTimeout(preloadAllImages, 1500);
+    }
 };
 
 // Cursor
