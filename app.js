@@ -31,10 +31,14 @@ function renderList() {
         <div class="list-group${i > 0 ? ' has-gap' : ''}">
             <div class="list-category">${cat}</div>
             ${items.map(item => `
-                <div class="list-item${item.state === 'SOLD' ? ' is-sold-item' : ''}" data-code="${item.code}">
+                <button
+                    type="button"
+                    class="list-item${item.state === 'SOLD' ? ' is-sold-item' : ''}"
+                    data-code="${item.code}"
+                    aria-label="Open ${item.object}">
                     <span class="item-code">${item.code}</span>
                     <span class="item-state ${item.state !== 'SOLD' ? 'is-available' : 'is-sold'}"></span>
-                </div>
+                </button>
             `).join('')}
         </div>
     `).join('');
@@ -60,8 +64,6 @@ function openCard(code) {
     if (elements.cardFields) {
         const stateClass = item.state !== 'SOLD' ? 'is-available' : 'is-sold';
         const rows = [
-            ['CODE',       item.code],
-            ['OBJECT',     item.object],
             ['MATERIAL',   item.material],
             ['PROCESS',    item.process],
             ['DIMENSIONS', item.dimensions],
@@ -69,11 +71,18 @@ function openCard(code) {
             ['WEIGHT',     item.weight],
             ['SEQ NO',     item.seq],
         ];
+        const headerHtml = `
+            <div class="card-header">
+                <div class="card-kicker">${item.category}</div>
+                <h2 class="card-title">${item.object}</h2>
+                <div class="card-code">${item.code}</div>
+            </div>
+        `;
         const notesHtml = item.notes
             ? `<div class="card-notes">${item.notes}</div>`
             : '';
         elements.cardFields.innerHTML =
-            rows.map(([label, val]) => `
+            headerHtml + rows.map(([label, val]) => `
                 <div class="card-row">
                     <label>${label}</label><span>${val}</span>
                 </div>
@@ -127,8 +136,12 @@ function closeImgFullscreen() {
     if (fs) fs.classList.remove('is-open');
 }
 
+function unlockArchive() {
+    document.body.classList.add('archive-unlocked');
+}
+
 function preloadAllImages() {
-    const images = ARCHIVE_DATA.filter(d => d.img).map(d => d.img);
+    const images = ARCHIVE_DATA.filter(d => d.img).slice(0, 2).map(d => d.img);
     let i = 0;
     function next() {
         if (i >= images.length) return;
@@ -142,7 +155,10 @@ function preloadAllImages() {
 
 window.onload = () => {
     renderList();
-    if (elements.brand) setTimeout(() => elements.brand.style.opacity = '1', 500);
+    document.body.classList.add('is-ready');
+    if (window.location.hash === '#screen-list') {
+        unlockArchive();
+    }
     // After page is rendered, start background preload of all images
     if ('requestIdleCallback' in window) {
         requestIdleCallback(() => preloadAllImages(), { timeout: 3000 });
@@ -150,6 +166,17 @@ window.onload = () => {
         setTimeout(preloadAllImages, 1500);
     }
 };
+
+document.addEventListener('click', e => {
+    const cue = e.target.closest('#brand-cue');
+    if (!cue) return;
+    e.preventDefault();
+    unlockArchive();
+    const target = document.getElementById('screen-list');
+    if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+});
 
 // Cursor
 let rafPending = false, mouseX = 0, mouseY = 0;
