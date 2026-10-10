@@ -1,8 +1,7 @@
-// Published pages live in index.html and archive/<code>/index.html.
-// Keep those pages aligned with this record when a piece changes.
+// Generated from works.json. Edit works.json, then run publish.bat.
 const ARCHIVE_DATA = [
     {
-        category: "WILD SILK",
+        category: "Wild Silk",
         object: "Wild Silk Robe",
         code: "WS-RB-01",
         material: "Aged Hand-spun Wild Silk (Tussah Silk)/ Aged Hand-loomed Homespun Cotton",
@@ -12,11 +11,10 @@ const ARCHIVE_DATA = [
         weight: "-",
         seq: "01/01",
         state: "RELEASED",
-        
-        img: "assets/WildSilk/WildSilk_Robe_01.webp",
+        img: "assets/WildSilk/WildSilk_Robe_01.webp"
     },
     {
-        category: "WILD SILK",
+        category: "Wild Silk",
         object: "Wild Silk Trousers",
         code: "WS-TR-01",
         material: "Aged Hand-spun Wild Silk (Tussah Silk)",
@@ -26,11 +24,10 @@ const ARCHIVE_DATA = [
         weight: "-",
         seq: "01/01",
         state: "RELEASED",
-        
         img: "assets/WildSilk/WildSilk_Trousers_01.webp"
     },
     {
-        category: "WILD SILK",
+        category: "Wild Silk",
         object: "Wild Silk Mantle",
         code: "WS-MA-01",
         material: "Aged Hand-spun Wild Silk (Tussah Silk)",
@@ -40,11 +37,10 @@ const ARCHIVE_DATA = [
         weight: "-",
         seq: "01/01",
         state: "RELEASED",
-        
         img: "assets/WildSilk/WildSilk_Mantle_01.webp"
     },
     {
-        category: "WILD SILK",
+        category: "Wild Silk",
         object: "Wild Silk Low Crotch Trousers",
         code: "WS-LCT-01",
         material: "Aged Hand-spun Wild Silk (Tussah Silk)",
@@ -54,7 +50,6 @@ const ARCHIVE_DATA = [
         weight: "-",
         seq: "01/01",
         state: "RELEASED",
-        
         img: "assets/WildSilk/WildSilk_Low_Crotch_Trousers_01.webp"
     },
     {
@@ -68,7 +63,6 @@ const ARCHIVE_DATA = [
         weight: "-",
         seq: "01/01",
         state: "RELEASED",
-        
         img: "assets/FireWeed/FireWeed_Gilet_01.webp"
     },
     {
@@ -82,7 +76,6 @@ const ARCHIVE_DATA = [
         weight: "-",
         seq: "01/01",
         state: "RELEASED",
-        
         img: "assets/FireWeed/FireWeed_Low_Crotch_Trousers_01.webp"
     },
     {
@@ -96,7 +89,6 @@ const ARCHIVE_DATA = [
         weight: "-",
         seq: "01/01",
         state: "RELEASED",
-        
         img: "assets/FireWeed/FireWeed_Mantle_01.webp"
     },
     {
@@ -110,7 +102,6 @@ const ARCHIVE_DATA = [
         weight: "-",
         seq: "01/01",
         state: "RELEASED",
-        
         img: "assets/FireWeed/FireWeed_Robe_01.webp"
     },
     {
@@ -124,7 +115,6 @@ const ARCHIVE_DATA = [
         weight: "-",
         seq: "01/01",
         state: "RELEASED",
-        
         img: "assets/FireWeed/FireWeed_Robe_02.webp"
     },
     {
@@ -138,7 +128,6 @@ const ARCHIVE_DATA = [
         weight: "-",
         seq: "01/01",
         state: "RELEASED",
-        
         img: "assets/Hemp/Hemp_Robe_01.webp"
-    },
+    }
 ];

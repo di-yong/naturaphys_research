@@ -4,6 +4,9 @@
 # Playwright MCP debug logs
 .playwright-mcp/
 
+# Local build tools
+node_modules/
+
 # Editor / OS
 .idea/
 .DS_Store

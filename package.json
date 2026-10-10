@@ -1,0 +1,10 @@
+{
+  "name": "natphx",
+  "private": true,
+  "scripts": {
+    "build": "node scripts/build.js"
+  },
+  "dependencies": {
+    "sharp": "0.33.5"
+  }
+}
