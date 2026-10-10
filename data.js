@@ -1,3 +1,5 @@
+// Published pages live in index.html and archive/<code>/index.html.
+// Keep those pages aligned with this record when a piece changes.
 const ARCHIVE_DATA = [
     {
         category: "WILD SILK",
@@ -11,7 +13,7 @@ const ARCHIVE_DATA = [
         seq: "01/01",
         state: "RELEASED",
         
-        img: "assets/WildSilk/WildSilk_Robe_01.png",
+        img: "assets/WildSilk/WildSilk_Robe_01.webp",
     },
     {
         category: "WILD SILK",
@@ -25,7 +27,7 @@ const ARCHIVE_DATA = [
         seq: "01/01",
         state: "RELEASED",
         
-        img: "assets/WildSilk/WildSilk_Trousers_01.png"
+        img: "assets/WildSilk/WildSilk_Trousers_01.webp"
     },
     {
         category: "WILD SILK",
@@ -39,7 +41,7 @@ const ARCHIVE_DATA = [
         seq: "01/01",
         state: "RELEASED",
         
-        img: "assets/WildSilk/WildSilk_Mantle_01.png"
+        img: "assets/WildSilk/WildSilk_Mantle_01.webp"
     },
     {
         category: "WILD SILK",
@@ -53,7 +55,7 @@ const ARCHIVE_DATA = [
         seq: "01/01",
         state: "RELEASED",
         
-        img: "assets/WildSilk/WildSilk_Low_Crotch_Trousers_01.png"
+        img: "assets/WildSilk/WildSilk_Low_Crotch_Trousers_01.webp"
     },
     {
         category: "Fireweed",
@@ -67,7 +69,7 @@ const ARCHIVE_DATA = [
         seq: "01/01",
         state: "RELEASED",
         
-        img: "assets/FireWeed/FireWeed_Gilet_01.png"
+        img: "assets/FireWeed/FireWeed_Gilet_01.webp"
     },
     {
         category: "Fireweed",
@@ -81,7 +83,7 @@ const ARCHIVE_DATA = [
         seq: "01/01",
         state: "RELEASED",
         
-        img: "assets/FireWeed/FireWeed_Low_Crotch_Trousers_01.png"
+        img: "assets/FireWeed/FireWeed_Low_Crotch_Trousers_01.webp"
     },
     {
         category: "Fireweed",
@@ -95,7 +97,7 @@ const ARCHIVE_DATA = [
         seq: "01/01",
         state: "RELEASED",
         
-        img: "assets/FireWeed/FireWeed_Mantle_01.png"
+        img: "assets/FireWeed/FireWeed_Mantle_01.webp"
     },
     {
         category: "Fireweed",
@@ -109,7 +111,7 @@ const ARCHIVE_DATA = [
         seq: "01/01",
         state: "RELEASED",
         
-        img: "assets/FireWeed/FireWeed_Robe_01.png"
+        img: "assets/FireWeed/FireWeed_Robe_01.webp"
     },
     {
         category: "Fireweed",
@@ -123,7 +125,7 @@ const ARCHIVE_DATA = [
         seq: "01/01",
         state: "RELEASED",
         
-        img: "assets/FireWeed/FireWeed_Robe_02.png"
+        img: "assets/FireWeed/FireWeed_Robe_02.webp"
     },
     {
         category: "Hemp",
@@ -137,6 +139,6 @@ const ARCHIVE_DATA = [
         seq: "01/01",
         state: "RELEASED",
         
-        img: "assets/Hemp/Hemp_Robe_01.png"
+        img: "assets/Hemp/Hemp_Robe_01.webp"
     },
 ];

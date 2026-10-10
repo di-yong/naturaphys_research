@@ -6,6 +6,7 @@
     <meta
       name="description"
       content="NATPHX archive of garment objects, material studies, and botanical immersion." />
+    <link rel="canonical" href="https://natphx.com/" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#121210" />
@@ -25,6 +26,7 @@
       href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400&display=swap"
       rel="stylesheet" />
     <link rel="stylesheet" href="style.css" />
+    <script>document.documentElement.classList.add('js')</script>
   </head>
   <body>
     <div id="custom-cursor"></div>
@@ -35,31 +37,75 @@
     </section>
 
     <section id="screen-list">
-      <div id="object-list"></div>
+      <nav id="object-list" aria-label="Archive">
+        <div class="list-group">
+          <div class="list-category">Wild Silk</div>
+          <a class="list-item" href="archive/ws-rb-01/index.html">
+            <span class="item-code">WS-RB-01</span>
+            <span class="item-name">Wild Silk Robe</span>
+            <span class="item-state is-available"></span>
+          </a>
+          <a class="list-item" href="archive/ws-tr-01/index.html">
+            <span class="item-code">WS-TR-01</span>
+            <span class="item-name">Wild Silk Trousers</span>
+            <span class="item-state is-available"></span>
+          </a>
+          <a class="list-item" href="archive/ws-ma-01/index.html">
+            <span class="item-code">WS-MA-01</span>
+            <span class="item-name">Wild Silk Mantle</span>
+            <span class="item-state is-available"></span>
+          </a>
+          <a class="list-item" href="archive/ws-lct-01/index.html">
+            <span class="item-code">WS-LCT-01</span>
+            <span class="item-name">Wild Silk Low Crotch Trousers</span>
+            <span class="item-state is-available"></span>
+          </a>
+        </div>
+        <div class="list-group has-gap">
+          <div class="list-category">Fireweed</div>
+          <a class="list-item" href="archive/fw-gi-01/index.html">
+            <span class="item-code">FW-GI-01</span>
+            <span class="item-name">Fireweed Gilet</span>
+            <span class="item-state is-available"></span>
+          </a>
+          <a class="list-item" href="archive/fw-lct-01/index.html">
+            <span class="item-code">FW-LCT-01</span>
+            <span class="item-name">Fireweed Low Crotch Trousers</span>
+            <span class="item-state is-available"></span>
+          </a>
+          <a class="list-item" href="archive/fw-ma-01/index.html">
+            <span class="item-code">FW-MA-01</span>
+            <span class="item-name">Fireweed Mantle</span>
+            <span class="item-state is-available"></span>
+          </a>
+          <a class="list-item" href="archive/fw-rb-01/index.html">
+            <span class="item-code">FW-RB-01</span>
+            <span class="item-name">Fireweed Robe</span>
+            <span class="item-state is-available"></span>
+          </a>
+          <a class="list-item" href="archive/fw-rb-02/index.html">
+            <span class="item-code">FW-RB-02</span>
+            <span class="item-name">Fireweed Robe</span>
+            <span class="item-state is-available"></span>
+          </a>
+        </div>
+        <div class="list-group has-gap">
+          <div class="list-category">Hemp</div>
+          <a class="list-item" href="archive/hp-rb-01/index.html">
+            <span class="item-code">HP-RB-01</span>
+            <span class="item-name">Hemp Robe</span>
+            <span class="item-state is-available"></span>
+          </a>
+        </div>
+      </nav>
     </section>
 
     <section id="contact-layer">
-      <a href="mailto:archive@natphx.com" id="contact-email"
-        >ARCHIVE@NATPHX.COM</a
-      >
+      <a href="mailto:archive@natphx.com" id="contact-email">ARCHIVE@NATPHX.COM</a>
       <span id="copyright">&copy; NATPHX 2026</span>
     </section>
 
-    <div id="object-card">
-      <div id="card-close">[ CLOSE ]</div>
-      <div id="card-prev">[ ← ]</div>
-      <div id="card-next">[ → ]</div>
-      <div id="card-img"></div>
-      <div id="card-fields"></div>
-    </div>
-
-    <div id="img-fullscreen">
-      <div id="img-fs-inner"></div>
-    </div>
-
     <audio id="click-sound" src="assets/click.wav" preload="auto"></audio>
-
-    <script src="data.js"></script>
     <script src="app.js"></script>
   </body>
 </html>
